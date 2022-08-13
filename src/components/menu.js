@@ -3,7 +3,9 @@ import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
 
-// import "./menu.css";
+///////////////////////////////
+//  STYLED COMPONENTS STYLES //
+///////////////////////////////
 const DivLogo = styled.div`
   display: flex;
   flex-direction: column;
@@ -13,9 +15,16 @@ const DivLogo = styled.div`
 const DivImage = styled.div`
   height: 0;
 `;
+////////////
+// TITULO //
+////////////
 const TitleH1 = styled.h1`
   font-weight: bold;
 `;
+
+///////////////////
+//HAMBURGUER ICON//
+///////////////////
 const HamburguerStyled = styled.div`
   display: block;
   background-color: #fff;
@@ -46,7 +55,9 @@ const HamburguerStyled = styled.div`
     transform: rotate(${props=>props.isActive ? '-405deg' : '0deg'});
   }
 `;
-
+//////////////////////
+//HAMBURGUER BUTTON //
+//////////////////////
 const HamburguerButton = styled.button`
   display: none;
   background: transparent;
@@ -62,6 +73,10 @@ const HamburguerButton = styled.button`
     display: flex;
   }
 `;
+
+///////////////////
+// HEADER STYLES //
+///////////////////
 const HeaderStyled = styled.header`
   display: flex;
   flex-direction: row;
@@ -78,6 +93,10 @@ const HeaderStyled = styled.header`
   height: ${(props) => props.headerHeight};
   padding: 1em;
 `;
+
+////////////////
+//MENU STYLES //
+////////////////
 const MenuStyled = styled.ul`
   display: flex;
   flex-direction: row;
@@ -102,6 +121,11 @@ const MenuStyled = styled.ul`
     opacity: 0;
   }
 `;
+
+///////////////////
+//MENUITEM STYLES//
+///////////////////
+
 const StyledLi = styled.li`
  margin: 0 1rem;
   overflow: hidden;
@@ -125,10 +149,10 @@ color: ${props=>props.foreColor ? props.foreColor : '#FFFFFF'};
 &:hover{
 color: ${props=>props.foreColor ? props.foreColor : '#FFFFFF'}80;
 transition: color 0.7s ease;
-}
-
-`
-
+}`;
+////////////////////////
+// MenuItem Component //
+////////////////////////
 export const MenuItem = ({children,foreColor,colorBackground})=>{
 
   return (
@@ -139,7 +163,9 @@ export const MenuItem = ({children,foreColor,colorBackground})=>{
 </>
 )
 }
-
+/////////////////////////
+//    Menu Component   //
+/////////////////////////
 export default function Menu({
   logo,
   imageText,
@@ -151,17 +177,16 @@ export default function Menu({
   headerHeight = "50px",
   titleHeader = "",
 }) {
-  const hamburguerIcon =useRef();
+  const hamburguerIcon =useRef(0);
   const menuReference = useRef(0);
   const toggleMenu = () => {
-    // console.log(menuReference);
+    
     menuReference.current.classList.toggle("show")
     hamburguerIcon.current.classList.toggle("rotate")
-    console.log(hamburguerIcon)
+     
     
-    // hamburguerIcon.current.props.isActive = hamburguerIcon.current.props.isActive ? false :true;  
   };
-  useResize(menuReference);
+  useResize(menuReference,hamburguerIcon);
   return (
     <HeaderStyled
       colorBackground={colorBackground}

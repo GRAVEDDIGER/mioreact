@@ -4,7 +4,8 @@ h2 {
   text-align: center;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
 }
@@ -13,20 +14,21 @@ html, body {
   font-family: "Raleway";
   box-sizing: border-box;
 }
-.show{
-transition: opacity 0.8s ease !important;
+/*SHOW MUESTRA U OCULTA EL MENU */
+.show {
+  transition: opacity 0.8s ease !important;
   opacity: 1 !important;
 }
-
-.rotate::before{
+/*GENERA LA ROTACION DE LOS PSEUDOELEMENTOS DE LA HAMBURGUESA*/
+.rotate::before {
   margin-top: 0px !important;
-  top: 0 ;
+  top: 0;
   transform: rotate(-405deg) !important;
-transition: transform 0.8s ease !important;
+  transition: transform 0.8s ease !important;
 }
-.rotate::after{
+.rotate::after {
   margin-top: 0px !important;
-top: 0;
-transition: transform 0.8s ease !important;
+  top: 0;
+  transition: transform 0.8s ease !important;
   transform: rotate(405deg) !important;
 }
