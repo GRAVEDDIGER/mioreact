@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export  const useResize1 = (referenciaMenu)=>{
+export  const useResize = (referenciaMenu)=>{
 const [windowSize,setWidowSize] =useState(window.innerWidth)
 window.onresize =()=>setWidowSize(window.innerWidth)
 
