@@ -106,9 +106,7 @@ transition opacity 0.8s ease;
     align-items: center;
     background:${colorBackground};
     color:${foreColor};
-    
-
-}`
+   }`
   const menuReference=useRef(0)
   const toggleMenu =()=>{
     console.log(menuReference)
