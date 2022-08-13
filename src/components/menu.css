@@ -20,7 +20,6 @@ html, body {
   align-items: center;
 }
 .logo-title >div{
-  height:0;
 }
 /* .top-nav {
   display: flex;
