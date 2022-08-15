@@ -9,16 +9,29 @@ import { useResize } from "../hooks/useresize";
 const DivLogo = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
+  padding: 0;
+  margin: 0;
+  height: 100%;
 `;
 const DivImage = styled.div`
-  height: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  > img {
+    justify-content: flex-start;
+    align-items: center;
+    height: 90px;
+  }
 `;
 ////////////
 // TITULO //
 ////////////
 const TitleH1 = styled.h1`
+  opacity: ${(props) => (props.logoImage !== "" ? 0 : 1)};
   font-weight: bold;
 `;
 
@@ -211,6 +224,7 @@ export default function Menu({
         foreColor={foreColor}
         headerHeight={headerHeight}
       >
+        {" "}
         {children}{" "}
       </MenuStyled>{" "}
     </HeaderStyled>
