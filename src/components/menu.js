@@ -46,13 +46,12 @@ const HamburguerStyled = styled.div`
   &::before {
     content: "";
     margin-top: -8px;
-    transform: rotate(${props=>props.isActive ? '405deg' : '0deg'});
-
+    transform: rotate(${(props) => (props.isActive ? "405deg" : "0deg")});
   }
   &::after {
     content: "";
     margin-top: 8px;
-    transform: rotate(${props=>props.isActive ? '-405deg' : '0deg'});
+    transform: rotate(${(props) => (props.isActive ? "-405deg" : "0deg")});
   }
 `;
 //////////////////////
@@ -90,7 +89,7 @@ const HeaderStyled = styled.header`
     ${(props) => props.gradient2}
   );
   color: ${(props) => props.foreColor};
-  height: ${(props) => props.headerHeight};
+  height: ${(props) => props.headerHeight} !important;
   padding: 1em;
 `;
 
@@ -116,8 +115,8 @@ const MenuStyled = styled.ul`
     align-items: center;
     background: ${(props) => props.colorBackground};
     color: ${(props) => props.foreColor};
-    border: 4px ${props=>props.colorBackground}60 solid;
-    box-shadow: 5px 5px 15px ${props=>props.colorBackground}20;
+    border: 4px ${(props) => props.colorBackground}60 solid;
+    box-shadow: 5px 5px 15px ${(props) => props.colorBackground}20;
     opacity: 0;
   }
 `;
@@ -127,47 +126,52 @@ const MenuStyled = styled.ul`
 ///////////////////
 
 const StyledLi = styled.li`
- margin: 0 1rem;
+  margin: 0 1rem;
   overflow: hidden;
-  background-color: ${props=>props.colorBackground};
-  color: ${props=>props.foreColor};
-  &:hover{
-    background-color: ${props=>props.colorBackground}80;
-  color: ${props=>props.foreColor}80;
-
+  background-color: ${(props) => props.colorBackground};
+  color: ${(props) => props.foreColor};
+  &:hover {
+    background-color: ${(props) => props.colorBackground}80;
+    color: ${(props) => props.foreColor}80;
   }
 `;
-const StyledItemButton=styled.button`
-width: 100%;
-height: 100%;
-border: none;
-font-size: 1.1rem;
-font-weight: bold;
+const StyledItemButton = styled.button`
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: bold;
 
-background-color: transparent;
-color: ${props=>props.foreColor ? props.foreColor : '#FFFFFF'};
-&:hover{
-color: ${props=>props.foreColor ? props.foreColor : '#FFFFFF'}80;
-transition: color 0.7s ease;
-}`;
+  background-color: transparent;
+  color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")};
+  &:hover {
+    color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")}80;
+    transition: color 0.7s ease;
+  }
+`;
 ////////////////////////
 // MenuItem Component //
 ////////////////////////
-export const MenuItem = ({children,foreColor,colorBackground})=>{
-
+export const MenuItem = ({ children, foreColor, colorBackground }) => {
   return (
-<>
-<StyledLi foreColor={foreColor} colorBackground={colorBackground}>
-   <StyledItemButton foreColor={foreColor} colorBackground={colorBackground}>{children}</StyledItemButton>
-</StyledLi>
-</>
-)
-}
+    <>
+      <StyledLi foreColor={foreColor} colorBackground={colorBackground}>
+        <StyledItemButton
+          foreColor={foreColor}
+          colorBackground={colorBackground}
+        >
+          {" "}
+          {children}{" "}
+        </StyledItemButton>{" "}
+      </StyledLi>{" "}
+    </>
+  );
+};
 /////////////////////////
 //    Menu Component   //
 /////////////////////////
 export default function Menu({
-  logo,
+  logoImage,
   imageText,
   children,
   colorBackground = "#00BAF0",
@@ -177,40 +181,38 @@ export default function Menu({
   headerHeight = "50px",
   titleHeader = "",
 }) {
-  const hamburguerIcon =useRef(0);
+  const hamburguerIcon = useRef(0);
   const menuReference = useRef(0);
   const toggleMenu = () => {
-    
-    menuReference.current.classList.toggle("show")
-    hamburguerIcon.current.classList.toggle("rotate")
-     
-    
+    menuReference.current.classList.toggle("show");
+    hamburguerIcon.current.classList.toggle("rotate");
   };
-  useResize(menuReference,hamburguerIcon);
+  useResize(menuReference, hamburguerIcon);
   return (
     <HeaderStyled
       colorBackground={colorBackground}
       gradient1={gradient1}
       gradient2={gradient2}
       foreColor={foreColor}
+      headerHeight={headerHeight}
     >
       <DivLogo>
         <DivImage>
-          <img src={logo} alt={imageText} />
-        </DivImage>
-        <TitleH1>{titleHeader}</TitleH1>
-      </DivLogo>
+          <img src={logoImage} alt={imageText} />{" "}
+        </DivImage>{" "}
+        <TitleH1> {titleHeader} </TitleH1>{" "}
+      </DivLogo>{" "}
       <HamburguerButton onClick={toggleMenu}>
-        <HamburguerStyled ref={hamburguerIcon} isActive={false}/>
-      </HamburguerButton>
+        <HamburguerStyled ref={hamburguerIcon} isActive={false} />{" "}
+      </HamburguerButton>{" "}
       <MenuStyled
         ref={menuReference}
         colorBackground={colorBackground}
         foreColor={foreColor}
         headerHeight={headerHeight}
       >
-        {children}
-      </MenuStyled>
+        {children}{" "}
+      </MenuStyled>{" "}
     </HeaderStyled>
   );
 }

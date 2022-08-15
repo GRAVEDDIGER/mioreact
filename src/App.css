@@ -1,4 +1,5 @@
 @import url(https://fonts.googleapis.com/css?family=Raleway);
+
 h2 {
   vertical-align: center;
   text-align: center;
@@ -14,11 +15,17 @@ body {
   font-family: "Raleway";
   box-sizing: border-box;
 }
+
 /*SHOW MUESTRA U OCULTA EL MENU */
+.App {
+  height: fit-content;
+}
+
 .show {
   transition: opacity 0.8s ease !important;
   opacity: 1 !important;
 }
+
 /*GENERA LA ROTACION DE LOS PSEUDOELEMENTOS DE LA HAMBURGUESA*/
 .rotate::before {
   margin-top: 0px !important;
@@ -26,9 +33,16 @@ body {
   transform: rotate(-405deg) !important;
   transition: transform 0.8s ease !important;
 }
+
 .rotate::after {
   margin-top: 0px !important;
   top: 0;
   transition: transform 0.8s ease !important;
   transform: rotate(405deg) !important;
+}
+
+@media (max-width: 700px) {
+  .App {
+    position: relative !important;
+  }
 }
