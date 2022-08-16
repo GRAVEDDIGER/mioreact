@@ -1,6 +1,7 @@
 {
     "recommendations": [
         "jonkwheeler.styled-components-snippets",
-        "burkeholland.simple-react-snippets"
+        "burkeholland.simple-react-snippets",
+        "styled-components.vscode-styled-components"
     ]
 }

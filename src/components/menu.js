@@ -2,6 +2,8 @@ import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
+import { BsCart4 } from "react-icons/bs";
+
 
 ///////////////////////////////
 //  STYLED COMPONENTS STYLES //
@@ -17,21 +19,20 @@ const DivLogo = styled.div`
 `;
 const DivImage = styled.div`
   height: 100%;
-  width: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   > img {
     justify-content: flex-start;
     align-items: center;
-    height: 90px;
+    height: 75px;
   }
 `;
 ////////////
 // TITULO //
 ////////////
 const TitleH1 = styled.h1`
-  opacity: ${(props) => (props.logoImage !== "" ? 0 : 1)};
+  display: ${(props) => (props.logoImage !== "" ? 'none' : 'flex')};
   font-weight: bold;
 `;
 
@@ -117,6 +118,7 @@ const MenuStyled = styled.ul`
   padding: 0;
   opacity: 0;
   transition: opacity 0.8s ease;
+  align-self: flex-end;
   @media (max-width: 700px) {
     position: absolute;
     top: 0;
@@ -154,13 +156,64 @@ const StyledItemButton = styled.button`
   border: none;
   font-size: 1.1rem;
   font-weight: bold;
-
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   background-color: transparent;
   color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")};
   &:hover {
     color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")}80;
     transition: color 0.7s ease;
   }
+`;
+const CartWrap = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: flex-end;
+padding-left: 1em;
+margin-left: 1em;
+button{
+  margin-right: 1em;
+  background-color: transparent;
+  color:#ffffff;
+  font: 18px;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border: none;
+  &:hover{
+    color:#ffffff80;
+
+  }}
+ > svg {
+    color:#ffffff;
+    color:'#FFF';
+    width:24px;
+    height:24px;
+    &:hover{
+      color:#ffffff80
+    }
+  }
+
+`
+const MenuWraper = styled.div`
+display: flex;
+flex-direction: column;
+align-items: flex-end;
+text-align: end;
+div{
+
+  margin-bottom: 2rem;
+  margin-right: 1em;
+
+}
+`;
+const HamburguerWraper =styled.div`
+display: flex;
+flex-direction: column-reverse;
+align-items: flex-end;
+button{
+  margin-right: 1rem;
+}
 `;
 ////////////////////////
 // MenuItem Component //
@@ -207,26 +260,35 @@ export default function Menu({
       gradient1={gradient1}
       gradient2={gradient2}
       foreColor={foreColor}
-      headerHeight={headerHeight}
-    >
+      headerHeight={headerHeight}>
       <DivLogo>
         <DivImage>
-          <img src={logoImage} alt={imageText} />{" "}
-        </DivImage>{" "}
-        <TitleH1> {titleHeader} </TitleH1>{" "}
-      </DivLogo>{" "}
+          <img src={logoImage} alt={imageText} />
+        </DivImage>
+        <TitleH1> {titleHeader} </TitleH1>
+      </DivLogo>
+      <HamburguerWraper>
       <HamburguerButton onClick={toggleMenu}>
-        <HamburguerStyled ref={hamburguerIcon} isActive={false} />{" "}
-      </HamburguerButton>{" "}
+        <HamburguerStyled ref={hamburguerIcon} isActive={false} />
+      </HamburguerButton>
+      {/* <div> */}
+<MenuWraper> 
+<CartWrap>
+<button>ingresar</button>
+
+         <BsCart4 style={{}}/>
+         </CartWrap>
       <MenuStyled
         ref={menuReference}
         colorBackground={colorBackground}
         foreColor={foreColor}
         headerHeight={headerHeight}
       >
-        {" "}
-        {children}{" "}
-      </MenuStyled>{" "}
+       {children}
+      </MenuStyled>
+      </MenuWraper>
+</HamburguerWraper>
+      {/* </div> */}
     </HeaderStyled>
   );
 }
