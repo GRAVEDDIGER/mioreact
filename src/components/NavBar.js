@@ -3,6 +3,7 @@ import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
 import { BsCart4 } from "react-icons/bs";
+import CartWidget from "./CartWidget";
 
 
 ///////////////////////////////
@@ -145,6 +146,7 @@ const StyledLi = styled.li`
   overflow: hidden;
   background-color: ${(props) => props.colorBackground};
   color: ${(props) => props.foreColor};
+  cursor:pointer;
   &:hover {
     background-color: ${(props) => props.colorBackground}80;
     color: ${(props) => props.foreColor}80;
@@ -159,6 +161,7 @@ const StyledItemButton = styled.button`
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   background-color: transparent;
+  cursor:pointer;
   color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")};
   &:hover {
     color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")}80;
@@ -226,17 +229,17 @@ export const MenuItem = ({ children, foreColor, colorBackground }) => {
           foreColor={foreColor}
           colorBackground={colorBackground}
         >
-          {" "}
-          {children}{" "}
-        </StyledItemButton>{" "}
-      </StyledLi>{" "}
+          
+          {children}
+        </StyledItemButton>
+      </StyledLi>
     </>
   );
 };
 /////////////////////////
 //    Menu Component   //
 /////////////////////////
-export default function Menu({
+export default function NavBar({
   logoImage,
   imageText,
   children,
@@ -273,11 +276,8 @@ export default function Menu({
       </HamburguerButton>
       {/* <div> */}
 <MenuWraper> 
-<CartWrap>
-<button>ingresar</button>
-
-         <BsCart4 style={{}}/>
-         </CartWrap>
+  
+    <CartWidget></CartWidget>
       <MenuStyled
         ref={menuReference}
         colorBackground={colorBackground}

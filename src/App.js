@@ -1,5 +1,5 @@
 import "./App.css";
-import Menu, { MenuItem } from "./components/menu";
+import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
 
 const colors={
@@ -12,7 +12,7 @@ const colors={
 function App() {
   return (
     <div className="App">
-      <Menu
+      <NavBar
         titleHeader="Mio Sublimacion"
         logoImage={logo}
         colorBackground={colors.background}
@@ -21,12 +21,14 @@ function App() {
         foreColor={colors.accent}
         headerHeight="120px"
       >
-        <MenuItem colorBackground="#f46b45" foreColor="#FFFFFF">
-          {" "}
-          ONE{" "}
-        </MenuItem>{" "}
-        <MenuItem> TWO </MenuItem> <MenuItem> THREE </MenuItem>{" "}
-      </Menu>{" "}
+        
+        <MenuItem >
+          Home
+        </MenuItem>
+        <MenuItem>Quienes somos?</MenuItem> 
+        <MenuItem>Catalogo</MenuItem>
+        <MenuItem>Contacto</MenuItem>
+      </NavBar>
     </div>
   );
 }
