@@ -1,5 +1,6 @@
 import "./App.css";
 import ProductCard from "./components/card";
+import { ItemListContainer } from "./components/ItemListContainer";
 import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
 
@@ -27,7 +28,10 @@ function App() {
         <MenuItem>Catalogo</MenuItem>
         <MenuItem>Contacto</MenuItem>
       </NavBar>
+      <ItemListContainer greeting="Bienvenido a MIO Sublimacion" color={colors.accent}>
       <ProductCard />
+      </ItemListContainer>
+
     </div>
   );
 }
