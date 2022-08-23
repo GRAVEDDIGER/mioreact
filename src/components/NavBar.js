@@ -2,9 +2,8 @@ import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
-import { BsCart4 } from "react-icons/bs";
-import CartWidget from "./CartWidget";
 
+import CartWidget from "./CartWidget";
 
 ///////////////////////////////
 //  STYLED COMPONENTS STYLES //
@@ -33,7 +32,7 @@ const DivImage = styled.div`
 // TITULO //
 ////////////
 const TitleH1 = styled.h1`
-  display: ${(props) => (props.logoImage !== "" ? 'none' : 'flex')};
+  display: ${(props) => (props.logoImage !== "" ? "none" : "flex")};
   font-weight: bold;
 `;
 
@@ -146,7 +145,7 @@ const StyledLi = styled.li`
   overflow: hidden;
   background-color: ${(props) => props.colorBackground};
   color: ${(props) => props.foreColor};
-  cursor:pointer;
+  cursor: pointer;
   &:hover {
     background-color: ${(props) => props.colorBackground}80;
     color: ${(props) => props.foreColor}80;
@@ -161,62 +160,30 @@ const StyledItemButton = styled.button`
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   background-color: transparent;
-  cursor:pointer;
+  cursor: pointer;
   color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")};
   &:hover {
     color: ${(props) => (props.foreColor ? props.foreColor : "#FFFFFF")}80;
     transition: color 0.7s ease;
   }
 `;
-const CartWrap = styled.div`
-display: flex;
-flex-direction: row;
-justify-content: flex-end;
-padding-left: 1em;
-margin-left: 1em;
-button{
-  margin-right: 1em;
-  background-color: transparent;
-  color:#ffffff;
-  font: 18px;
-  text-transform: uppercase;
-  font-weight: 600;
-  letter-spacing: 1px;
-  border: none;
-  &:hover{
-    color:#ffffff80;
-
-  }}
- > svg {
-    color:#ffffff;
-    color:'#FFF';
-    width:24px;
-    height:24px;
-    &:hover{
-      color:#ffffff80
-    }
-  }
-
-`
 const MenuWraper = styled.div`
-display: flex;
-flex-direction: column;
-align-items: flex-end;
-text-align: end;
-div{
-
-  margin-bottom: 2rem;
-  margin-right: 1em;
-
-}
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: end;
+  div {
+    margin-bottom: 2rem;
+    margin-right: 1em;
+  }
 `;
-const HamburguerWraper =styled.div`
-display: flex;
-flex-direction: column-reverse;
-align-items: flex-end;
-button{
-  margin-right: 1rem;
-}
+const HamburguerWraper = styled.div`
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  button {
+    margin-right: 1rem;
+  }
 `;
 ////////////////////////
 // MenuItem Component //
@@ -229,7 +196,6 @@ export const MenuItem = ({ children, foreColor, colorBackground }) => {
           foreColor={foreColor}
           colorBackground={colorBackground}
         >
-          
           {children}
         </StyledItemButton>
       </StyledLi>
@@ -263,7 +229,8 @@ export default function NavBar({
       gradient1={gradient1}
       gradient2={gradient2}
       foreColor={foreColor}
-      headerHeight={headerHeight}>
+      headerHeight={headerHeight}
+    >
       <DivLogo>
         <DivImage>
           <img src={logoImage} alt={imageText} />
@@ -271,23 +238,22 @@ export default function NavBar({
         <TitleH1> {titleHeader} </TitleH1>
       </DivLogo>
       <HamburguerWraper>
-      <HamburguerButton onClick={toggleMenu}>
-        <HamburguerStyled ref={hamburguerIcon} isActive={false} />
-      </HamburguerButton>
-      {/* <div> */}
-<MenuWraper> 
-  
-    <CartWidget></CartWidget>
-      <MenuStyled
-        ref={menuReference}
-        colorBackground={colorBackground}
-        foreColor={foreColor}
-        headerHeight={headerHeight}
-      >
-       {children}
-      </MenuStyled>
-      </MenuWraper>
-</HamburguerWraper>
+        <HamburguerButton onClick={toggleMenu}>
+          <HamburguerStyled ref={hamburguerIcon} isActive={false} />
+        </HamburguerButton>
+        {/* <div> */}
+        <MenuWraper>
+          <CartWidget></CartWidget>
+          <MenuStyled
+            ref={menuReference}
+            colorBackground={colorBackground}
+            foreColor={foreColor}
+            headerHeight={headerHeight}
+          >
+            {children}
+          </MenuStyled>
+        </MenuWraper>
+      </HamburguerWraper>
       {/* </div> */}
     </HeaderStyled>
   );
