@@ -5,10 +5,16 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { Button, CardActionArea, CardActions } from "@mui/material";
 import { Itemcounter } from "./itemcounter";
+import styled from "styled-components";
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default function ProductCard() {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} style={{ margin: "2rem" }}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -26,11 +32,13 @@ export default function ProductCard() {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <Itemcounter />
-        <Button size="small" color="primary">
-          Share
-        </Button>
+      <CardActions style={{ justifyContent: "center" }}>
+        <StyledContainer>
+          <Itemcounter />
+          <Button size="small" color="primary">
+            Share
+          </Button>
+        </StyledContainer>
       </CardActions>
     </Card>
   );
