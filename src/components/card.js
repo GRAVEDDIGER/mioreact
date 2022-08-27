@@ -3,12 +3,41 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Button, CardActionArea, CardActions } from "@mui/material";
-import { Itemcounter } from "./itemcounter";
+import {  CardActionArea, CardActions, colors } from "@mui/material";
+import { Itemcounter } from "./itemcount";
+import styled from "styled-components";
+const ActionsWraper = styled.div`
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-content: center;
+align-items: center;
+`;
+const BotonComprar =styled.button`
+background-color: transparent;
+color: #42a5f5;
+padding: 1rem;
+box-shadow: 4px 4px 10px #d5d5d5;
+outline: none;
+border: 1px solid transparent;
+border-radius: 15%;
+font-size: 20px;
+font-weight: bold;
+letter-spacing: 0.3rem;
+text-align: center;
+align-self: center;
+font-family: sans-serif;
+&:hover{
+  color: #1976d2;
+  border: 1px solid #d5d5d5;
+  transition: border,color 1s ease;
+  
+}
+`
 
-export default function ProductCard() {
+export default function ProductCard({color}) {
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345 }} style={{margin:'1rem'}}>
       <CardActionArea>
         <CardMedia
           component="img"
@@ -18,19 +47,20 @@ export default function ProductCard() {
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            Pequeño gatito
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
+            Animal de compania, domestico, cariñoso y de buen sabor.
           </Typography>
         </CardContent>
+
       </CardActionArea>
-      <CardActions>
+      <CardActions style={{justifyContent:"center"}}>
+        <ActionsWraper>
         <Itemcounter />
-        <Button size="small" color="primary">
-          Share
-        </Button>
+    <BotonComprar>Comprar</BotonComprar>
+        </ActionsWraper>
+
       </CardActions>
     </Card>
   );

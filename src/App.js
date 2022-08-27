@@ -1,3 +1,4 @@
+import { color } from "@mui/system";
 import "./App.css";
 import ProductCard from "./components/card";
 import { ItemListContainer } from "./components/ItemListContainer";
@@ -10,6 +11,7 @@ const colors = {
   accent: "#B189E8",
   strongAccent: "#7B649C",
   background: "#f46b45",
+  lightBackground: "#f5f5f5",
 };
 function App() {
   return (
@@ -28,8 +30,8 @@ function App() {
         <MenuItem>Catalogo</MenuItem>
         <MenuItem>Contacto</MenuItem>
       </NavBar>
-      <ItemListContainer greeting="Bienvenido a MIO Sublimacion" color={colors.accent}>
-      <ProductCard />
+      <ItemListContainer greeting="Bienvenidos a MIO Sublimacion" color={colors.lightBackground}>
+      <ProductCard  />
       </ItemListContainer>
 
     </div>

@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const ItemCounter = styled.div`
+const ItemCounterDiv = styled.div`
   display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
+  align-self: center;
+  align-content: center;
+  margin: 1rem, auto !important;
   > h6 {
     margin: 1rem;
     font-family: sans-serif;
@@ -24,16 +27,17 @@ const CounterButton = styled.button`
 export const Itemcounter = () => {
   const [counter, setcounter] = useState(0);
   const handleMinusButtonClick = () => {
+    if(counter-1 >-1) 
     setcounter(counter - 1);
   };
   const handlePlusButtonClick = () => {
     setcounter(counter + 1);
   };
   return (
-    <ItemCounter>
+    <ItemCounterDiv>
       <CounterButton onClick={handleMinusButtonClick}>-</CounterButton>
       <h6>{counter}</h6>
       <CounterButton onClick={handlePlusButtonClick}>+</CounterButton>
-    </ItemCounter>
+    </ItemCounterDiv>
   );
 };
