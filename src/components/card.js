@@ -32,12 +32,18 @@ font-family: sans-serif;
   border: 1px solid #d5d5d5;
   transition: border,color 1s ease;
   
-}
-`
+}`;
+
+const StyledContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+`;
 
 export default function ProductCard({color}) {
   return (
-    <Card sx={{ maxWidth: 345 }} style={{margin:'1rem'}}>
+
+    <Card sx={{ maxWidth: 345 }} style={{ margin: "2rem" }}>
       <CardActionArea>
         <CardMedia
           component="img"
