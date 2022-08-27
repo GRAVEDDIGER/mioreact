@@ -25,12 +25,13 @@ const CounterButton = styled.button`
   box-shadow: 3px 3px 15px gray;
 `;
 export const Itemcounter = () => {
+  const stock = 12;
   const [counter, setcounter] = useState(0);
   const handleMinusButtonClick = () => {
-    if(counter-1 >-1) 
-    setcounter(counter - 1);
+    if (counter - 1 > -1) setcounter(counter - 1);
   };
   const handlePlusButtonClick = () => {
+    if (counter < stock) 
     setcounter(counter + 1);
   };
   return (
