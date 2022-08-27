@@ -1,6 +1,4 @@
-import { color } from "@mui/system";
 import "./App.css";
-import ProductCard from "./components/card";
 import { ItemListContainer } from "./components/ItemListContainer";
 import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
@@ -30,10 +28,12 @@ function App() {
         <MenuItem>Catalogo</MenuItem>
         <MenuItem>Contacto</MenuItem>
       </NavBar>
-      <ItemListContainer greeting="Bienvenidos a MIO Sublimacion" color={colors.lightBackground}>
-      <ProductCard  />
-      </ItemListContainer>
-
+      <ItemListContainer
+        greeting="Bienvenidos a MIO Sublimacion"
+        shadow={colors.primary}
+        slogan="Diseños personalizados segun tus necesidades"
+        color={colors.lightBackground}
+      />
     </div>
   );
 }
