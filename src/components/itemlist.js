@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 import { Loader } from "./loader";
 import Item from "./item";
-import uuid from "react-uuid";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -11,19 +10,22 @@ const StyledDiv = styled.div`
   justify-content: center;
 `;
 export const ItemList = ({ dataBase,stock }) => {
+
   return (
     <StyledDiv>
       {dataBase.length > 0 ? (
-        dataBase.map((item) => (
-          <Item
+        dataBase.map((item) => {
+          return <Item
             image={item.image}
             description={item.description}
             title={item.title}
-            key={uuid()}
             stock={stock}
+            key={item.id}
+            id={item.id}
           />
+        }
         ))
-      ) : (
+       : (
         <Loader />
       )}
     </StyledDiv>

@@ -1,4 +1,4 @@
-export function httpRequest() {
+export  function httpRequest() {
   const defaultFetch = (url, options) => {
     options.headers = options.headers
       ? { Accept: 'application / json', ...options.headers }
@@ -19,7 +19,7 @@ export function httpRequest() {
           }).catch(error=>error)
     );
   };
-  const get = async (url,options) => defaultFetch(url,options={});
+  const get =  (url,options) =>  defaultFetch(url,options={});
   const post = (url, options={}) => {
     options.method='POST';
     return defaultFetch(url,options);

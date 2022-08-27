@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import { Itemcounter } from "./itemcount";
 import styled from "styled-components";
+import {httpRequest} from '../funciones/consultaaapi'
 const ActionsWraper = styled.div`
   display: flex;
   flex-direction: column;
@@ -76,7 +77,21 @@ align-items: center;
 align-content: center;
 margin-top: 1rem;
 `;
-export default function Item({ color, title, description, image ,stock}) {
+export default function Item({ color, title, description, image ,stock,id}) {
+ const handleClick= async (e)=>{
+try {
+  const data = await httpRequest().get("https://fakestoreapi.com/products/"+e.target.id)  
+  console.log(data)
+  if (data.error) throw Error(data.statusText)
+  else {
+//aca va la logica que generara el modal. (debere crear una variable de estado para esto)
+  }
+
+} catch (error) {console.log(error);
+  
+}
+
+ };
   return (
     <StyledCard
       color={color}
@@ -104,7 +119,7 @@ export default function Item({ color, title, description, image ,stock}) {
         <StockDisponible variant="body2">{`Stock disponible ${stock} `}</StockDisponible>
 
           <Itemcounter />
-          <BotonComprar>Comprar</BotonComprar>
+          <BotonComprar id={id} onClick={handleClick}>Comprar</BotonComprar>
 
         </ActionsWraper>
       </StyledCardActions>
