@@ -2,7 +2,6 @@ import React from "react";
 import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
-
 import CartWidget from "./CartWidget";
 
 ///////////////////////////////

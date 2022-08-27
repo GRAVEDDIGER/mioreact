@@ -32,54 +32,60 @@ const BotonComprar = styled.button`
     border: 1px solid #d5d5d5;
     transition: border, color, background-color 1s ease;
     background-color: #f1f1f1;
-
   }
-  &:active{
-    box-shadow: inset 3px 3px 15px ${props=>props.color};
+  &:active {
+    box-shadow: inset 3px 3px 15px ${(props) => props.color};
   }
 `;
 const StyledCard = styled(Card)`
-  box-shadow: 2px 2px 10px ${props=>props.color};
+  box-shadow: 2px 2px 10px ${(props) => props.color};
   margin: 1rem;
   display: flex;
   justify-content: space-between;
   flex-direction: column;
   max-width: 350px;
+  @media (max-width: 400px) {
+    margin: 0.5rem 0.5rem;
+  }
 `;
 
-const StyledCardActionArea =styled(CardActionArea)`
-display: flex !important;
-justify-content: center;
-flex-direction: column;
+const StyledCardActionArea = styled(CardActionArea)`
+  display: flex !important;
+  justify-content: center;
+  flex-direction: column;
 `;
-const StyledCardMedia=styled(CardMedia)`
-height: 180px;
+const StyledCardMedia = styled(CardMedia)`
+  height: 180px;
+  text-align: center;
+  margin: 2rem 1rem;
+  object-fit: scale-down;
+  width: auto !important;
+  @media (max-width: 400px) {
+    margin: 1rem 0.5rem;
+  }
+`;
+const StyledCardActions = styled(CardActions)`
+  justify-content: center;
+  align-content: space-between;
+`;
+const StockDisponible=styled(Typography)`
+font-weight: bold;
 text-align: center;
-margin: 2rem 1rem;
-object-fit:scale-down;
-width: auto !important;
+justify-content: center;
+align-items: center;
+align-content: center;
+margin-top: 1rem;
 `;
-const StyledCardActions=styled(CardActions)`
-justify-content: center; align-content: space-between;
-`;
-export default function ProductCard({ color, title, description, image }) {
+export default function Item({ color, title, description, image ,stock}) {
   return (
     <StyledCard
       color={color}
       title={title}
       description={description}
       image={image}
-      >
-      <StyledCardActionArea
-        image={image}
-
-      >
-        <StyledCardMedia
-          component="img"
-          image={image}
-          alt={title}
-
-        />
+    >
+      <StyledCardActionArea image={image}>
+        <StyledCardMedia component="img" image={image} alt={title} />
         <CardContent title={title}>
           <Typography title={title} gutterBottom variant="h5" component="div">
             {title}
@@ -94,9 +100,12 @@ export default function ProductCard({ color, title, description, image }) {
         </CardContent>
       </StyledCardActionArea>
       <StyledCardActions>
-        <ActionsWraper >
+        <ActionsWraper>
+        <StockDisponible variant="body2">{`Stock disponible ${stock} `}</StockDisponible>
+
           <Itemcounter />
           <BotonComprar>Comprar</BotonComprar>
+
         </ActionsWraper>
       </StyledCardActions>
     </StyledCard>

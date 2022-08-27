@@ -31,8 +31,7 @@ export const Itemcounter = () => {
     if (counter - 1 > -1) setcounter(counter - 1);
   };
   const handlePlusButtonClick = () => {
-    if (counter < stock) 
-    setcounter(counter + 1);
+    if (counter < stock) setcounter(counter + 1);
   };
   return (
     <ItemCounterDiv>

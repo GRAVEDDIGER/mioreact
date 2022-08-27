@@ -2,14 +2,8 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import bannerImage from "../images/baner.png";
 import { httpRequest } from "../funciones/consultaaapi";
-import ProductCard from "./card";
-import { Loader } from "./loader";
-import uuid from "react-uuid";
+import { ItemList } from "./itemlist";
 const ItemListWraper = styled.div`
-  @font-face {
-    font-family: Roboto;
-    src: url("../fonts/Roboto-Bold.ttf");
-  }
   background-color: ${(props) => props.color};
   margin: auto;
   display: flex;
@@ -47,7 +41,6 @@ const StyledImage = styled.div`
     align-content: center;
     justify-content: center;
     font-size: 3rem;
-
     p {
       display: none;
       font-size: 1.5rem;
@@ -59,18 +52,16 @@ const StyledImage = styled.div`
       font-size: 3.5rem;
     }
   }
+  @media (max-width: 400px) {
+    width: 100%;
+  }
 `;
-const StyledChildren = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
-`;
+
 export const ItemListContainer = ({ greeting, color, slogan, shadow }) => {
   const [dataBase, setdataBase] = useState([]);
+  const [stock, setstock] = useState(12)
   useEffect(() => {
     const url = "https://fakestoreapi.com/products";
-
     httpRequest()
       .get(url)
       .then((res) => {
@@ -83,20 +74,7 @@ export const ItemListContainer = ({ greeting, color, slogan, shadow }) => {
       <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
         {greeting} <p>{slogan}</p>
       </StyledImage>
-      <StyledChildren>
-                {dataBase.length > 0 ? (
-          dataBase.map((item) => (
-            <ProductCard
-              image={item.image}
-              description={item.description}
-              title={item.title}
-              key={uuid()}
-            />
-          ))
-        ) : (
-          <Loader />
-        )}
-      </StyledChildren>
+      <ItemList dataBase={dataBase} stock={stock}/>
     </ItemListWraper>
   );
 };
