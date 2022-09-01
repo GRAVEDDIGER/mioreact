@@ -1,7 +1,10 @@
 import "./App.css";
+import ItemDetailContainer from "./components/ItemDetailContainer";
 import { ItemListContainer } from "./components/ItemListContainer";
 import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
+import imagenDetalle from "./images/detalles.jpg";
+import React, { useState } from "react";
 
 const colors = {
   primary: "#9C805C",
@@ -12,6 +15,7 @@ const colors = {
   lightBackground: "#f5f5f5",
 };
 function App() {
+  const [id, setid] = useState(null);
   return (
     <div className="App">
       <NavBar
@@ -33,6 +37,15 @@ function App() {
         shadow={colors.primary}
         slogan="Diseños personalizados segun tus necesidades"
         color={colors.lightBackground}
+        datosSetter={setid}
+      />
+      <ItemDetailContainer
+        imagen={imagenDetalle}
+        datos={id}
+        datosSetter={setid}
+        shadow={colors.primary}
+        color={colors.lightBackground}
+        greeting="Detalles del producto"
       />
     </div>
   );

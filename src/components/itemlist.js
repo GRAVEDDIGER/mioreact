@@ -9,7 +9,7 @@ const StyledDiv = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
-export const ItemList = ({ dataBase,stock }) => {
+export const ItemList = ({ dataBase,stock,datosSetter }) => {
 
   return (
     <StyledDiv>
@@ -22,6 +22,8 @@ export const ItemList = ({ dataBase,stock }) => {
             stock={stock}
             key={item.id}
             id={item.id}
+            dataBase={dataBase}
+            datosSetter={datosSetter}
           />
         }
         ))

@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import bannerImage from "../images/baner.png";
-import { httpRequest } from "../funciones/consultaaapi";
-import { ItemList } from "./itemlist";
-const ItemListWraper = styled.div`
+import React from 'react'
+import styled from 'styled-components';
+import ItemDetail from './ItemDetail';
+
+const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: auto;
   display: flex;
@@ -12,8 +11,7 @@ const ItemListWraper = styled.div`
   width: 100%;
   justify-content: center;
 `;
-
-const StyledImage = styled.div`
+const StyledDetailsImage = styled.div`
   background-image: url(${(prop) => prop.imagen});
   display: flex;
   flex-direction: column;
@@ -28,7 +26,7 @@ const StyledImage = styled.div`
   color: ${(props) => props.color};
   font-family: "Roboto", sans-serif;
   background-repeat: no-repeat;
-  background-size: 100%, auto;
+  background-size: cover;
   justify-content: space-between;
   > p {
     margin-bottom: 0;
@@ -36,7 +34,8 @@ const StyledImage = styled.div`
     font-size: 2rem;
   }
   @media (max-width: 900px) {
-    background-size: auto;
+    background-size: cover;
+min-height: 300px;
     text-align: center;
     align-content: center;
     justify-content: center;
@@ -56,25 +55,14 @@ const StyledImage = styled.div`
     width: 100%;
   }
 `;
+function ItemDetailContainer({imagen,datos,datosSetter,greeting,color,shadow}) {
+ if (datos) { 
+    return (
+    <ItemDetailWraper>
+    <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>{greeting}  </StyledDetailsImage>
+    <ItemDetail datos={datos} />
+    </ItemDetailWraper>
+  )}
+}
 
-export const ItemListContainer = ({ greeting, color, slogan, shadow,datosSetter }) => {
-  const [dataBase, setdataBase] = useState([]);
-  const [stock, setstock] = useState(12)
-  useEffect(() => {
-    const url = "https://fakestoreapi.com/products";
-    httpRequest()
-      .get(url)
-      .then((res) => {
-        if (!res.error) setdataBase(res);
-      });
-  }, []);
-
-  return (
-    <ItemListWraper color={color}>
-      <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
-        {greeting} <p>{slogan}</p>
-      </StyledImage>
-      <ItemList dataBase={dataBase} stock={stock} datosSetter={datosSetter}/>
-    </ItemListWraper>
-  );
-};
+export default ItemDetailContainer

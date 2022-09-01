@@ -77,13 +77,16 @@ align-items: center;
 align-content: center;
 margin-top: 1rem;
 `;
-export default function Item({ color, title, description, image ,stock,id}) {
+export default function Item({ color, title, description, image ,stock,id,datosSetter}) {
  const handleClick= async (e)=>{
-try {
+
+  try {
   const data = await httpRequest().get("https://fakestoreapi.com/products/"+e.target.id)  
-  console.log(data)
+  console.log(datosSetter)
   if (data.error) throw Error(data.statusText)
   else {
+    datosSetter(data)
+    console.log(data)
 //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
   }
 
@@ -105,13 +108,7 @@ try {
           <Typography title={title} gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-          <Typography
-            description={description}
-            variant="body2"
-            color="text.secondary"
-          >
-            {description}
-          </Typography>
+
         </CardContent>
       </StyledCardActionArea>
       <StyledCardActions>
