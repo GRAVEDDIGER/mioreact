@@ -4,7 +4,6 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
-import { Itemcounter } from "./itemcount";
 import styled from "styled-components";
 import { httpRequest } from "../funciones/consultaaapi";
 const ActionsWraper = styled.div`
@@ -69,14 +68,7 @@ const StyledCardActions = styled(CardActions)`
   justify-content: center;
   align-content: space-between;
 `;
-const StockDisponible = styled(Typography)`
-  font-weight: bold;
-  text-align: center;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  margin-top: 1rem;
-`;
+
 export default function Item({
   color,
   title,
