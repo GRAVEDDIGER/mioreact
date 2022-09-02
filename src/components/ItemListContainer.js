@@ -57,9 +57,16 @@ const StyledImage = styled.div`
   }
 `;
 
-export const ItemListContainer = ({ greeting, color, slogan, shadow,datosSetter }) => {
+export const ItemListContainer = ({
+  greeting,
+  color,
+  slogan,
+  shadow,
+  datosSetter,
+  datos,
+}) => {
   const [dataBase, setdataBase] = useState([]);
-  const [stock, setstock] = useState(12)
+  const [stock, setstock] = useState(12);
   useEffect(() => {
     const url = "https://fakestoreapi.com/products";
     httpRequest()
@@ -68,13 +75,14 @@ export const ItemListContainer = ({ greeting, color, slogan, shadow,datosSetter 
         if (!res.error) setdataBase(res);
       });
   }, []);
-
-  return (
-    <ItemListWraper color={color}>
-      <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
-        {greeting} <p>{slogan}</p>
-      </StyledImage>
-      <ItemList dataBase={dataBase} stock={stock} datosSetter={datosSetter}/>
-    </ItemListWraper>
-  );
+  if (!datos) {
+    return (
+      <ItemListWraper color={color}>
+        <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
+          {greeting} <p>{slogan}</p>
+        </StyledImage>
+        <ItemList dataBase={dataBase} stock={stock} datosSetter={datosSetter} />
+      </ItemListWraper>
+    );
+  }
 };

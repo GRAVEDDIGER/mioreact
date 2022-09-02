@@ -187,13 +187,20 @@ const HamburguerWraper = styled.div`
 ////////////////////////
 // MenuItem Component //
 ////////////////////////
-export const MenuItem = ({ children, foreColor, colorBackground }) => {
+export const MenuItem = ({
+  children,
+  foreColor,
+  colorBackground,
+  handleClick,
+}) => {
+  console.log(handleClick);
   return (
     <>
       <StyledLi foreColor={foreColor} colorBackground={colorBackground}>
         <StyledItemButton
           foreColor={foreColor}
           colorBackground={colorBackground}
+          onClick={handleClick}
         >
           {children}
         </StyledItemButton>

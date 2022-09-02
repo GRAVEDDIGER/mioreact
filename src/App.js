@@ -16,6 +16,9 @@ const colors = {
 };
 function App() {
   const [id, setid] = useState(null);
+  function handleHome(e) {
+    setid(null);
+  }
   return (
     <div className="App">
       <NavBar
@@ -27,7 +30,7 @@ function App() {
         foreColor={colors.accent}
         headerHeight="120px"
       >
-        <MenuItem>Home</MenuItem>
+        <MenuItem handleClick={handleHome}>Home</MenuItem>
         <MenuItem>Quienes somos?</MenuItem>
         <MenuItem>Catalogo</MenuItem>
         <MenuItem>Contacto</MenuItem>
@@ -39,6 +42,7 @@ function App() {
         slogan="Diseños personalizados segun tus necesidades"
         color={colors.lightBackground}
         datosSetter={setid}
+        datos={id}
       />
       <ItemDetailContainer
         imagen={imagenDetalle}
