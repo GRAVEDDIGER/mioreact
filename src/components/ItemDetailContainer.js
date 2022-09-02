@@ -1,6 +1,6 @@
-import React from 'react'
-import styled from 'styled-components';
-import ItemDetail from './ItemDetail';
+import React from "react";
+import styled from "styled-components";
+import ItemDetail from "./ItemDetail";
 
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
@@ -10,11 +10,14 @@ const ItemDetailWraper = styled.div`
   flex-direction: column;
   width: 100%;
   justify-content: center;
+  overflow: auto;
 `;
 const StyledDetailsImage = styled.div`
   background-image: url(${(prop) => prop.imagen});
   display: flex;
   flex-direction: column;
+  max-width: 100vw;
+  width: 100%;
   height: 300px;
   box-shadow: 3px 3px 15px ${(prop) => prop.shadow};
   font-size: 2.5rem;
@@ -35,7 +38,7 @@ const StyledDetailsImage = styled.div`
   }
   @media (max-width: 900px) {
     background-size: cover;
-min-height: 300px;
+    min-height: 300px;
     text-align: center;
     align-content: center;
     justify-content: center;
@@ -55,14 +58,38 @@ min-height: 300px;
     width: 100%;
   }
 `;
-function ItemDetailContainer({imagen,datos,datosSetter,greeting,color,shadow}) {
- if (datos) { 
+const ItemDescription = styled.div`
+  font-size: 22px;
+  margin: 1.5rem;
+  text-align: justify;
+  padding: 1rem;
+  > h5 {
+    font-size: 30px;
+    font-weight: bold;
+  }
+`;
+function ItemDetailContainer({
+  imagen,
+  datos,
+  datosSetter,
+  greeting,
+  color,
+  shadow,
+}) {
+  if (datos) {
     return (
-    <ItemDetailWraper>
-    <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>{greeting}  </StyledDetailsImage>
-    <ItemDetail datos={datos} />
-    </ItemDetailWraper>
-  )}
+      <ItemDetailWraper color={color}>
+        <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
+          {greeting}
+        </StyledDetailsImage>
+        <ItemDetail datos={datos} color={color} />
+        <ItemDescription>
+          <h3>Descripcion</h3>
+          {datos.description}
+        </ItemDescription>
+      </ItemDetailWraper>
+    );
+  }
 }
 
-export default ItemDetailContainer
+export default ItemDetailContainer;

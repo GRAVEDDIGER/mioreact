@@ -9,25 +9,25 @@ const StyledDiv = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
-export const ItemList = ({ dataBase,stock,datosSetter }) => {
-
+export const ItemList = ({ dataBase, datosSetter }) => {
   return (
     <StyledDiv>
       {dataBase.length > 0 ? (
         dataBase.map((item) => {
-          return <Item
-            image={item.image}
-            description={item.description}
-            title={item.title}
-            stock={stock}
-            key={item.id}
-            id={item.id}
-            dataBase={dataBase}
-            datosSetter={datosSetter}
-          />
-        }
-        ))
-       : (
+          return (
+            <Item
+              image={item.image}
+              description={item.description}
+              title={item.title}
+              stockItem={item.rating.count}
+              key={item.id}
+              id={item.id}
+              dataBase={dataBase}
+              datosSetter={datosSetter}
+            />
+          );
+        })
+      ) : (
         <Loader />
       )}
     </StyledDiv>

@@ -6,7 +6,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import { Itemcounter } from "./itemcount";
 import styled from "styled-components";
-import {httpRequest} from '../funciones/consultaaapi'
+import { httpRequest } from "../funciones/consultaaapi";
 const ActionsWraper = styled.div`
   display: flex;
   flex-direction: column;
@@ -69,32 +69,41 @@ const StyledCardActions = styled(CardActions)`
   justify-content: center;
   align-content: space-between;
 `;
-const StockDisponible=styled(Typography)`
-font-weight: bold;
-text-align: center;
-justify-content: center;
-align-items: center;
-align-content: center;
-margin-top: 1rem;
+const StockDisponible = styled(Typography)`
+  font-weight: bold;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin-top: 1rem;
 `;
-export default function Item({ color, title, description, image ,stock,id,datosSetter}) {
- const handleClick= async (e)=>{
-
-  try {
-  const data = await httpRequest().get("https://fakestoreapi.com/products/"+e.target.id)  
-  console.log(datosSetter)
-  if (data.error) throw Error(data.statusText)
-  else {
-    datosSetter(data)
-    console.log(data)
-//aca va la logica que generara el modal. (debere crear una variable de estado para esto)
-  }
-
-} catch (error) {console.log(error);
-  
-}
-
- };
+export default function Item({
+  color,
+  title,
+  description,
+  image,
+  stockItem,
+  id,
+  datosSetter,
+  dataBase,
+}) {
+  const handleClick = async (e) => {
+    try {
+      const data = await httpRequest().get(
+        "https://fakestoreapi.com/products/" + e.target.id
+      );
+      console.log(datosSetter);
+      if (data.error) throw Error(data.statusText);
+      else {
+        datosSetter(data);
+        console.log(data);
+        //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(dataBase);
   return (
     <StyledCard
       color={color}
@@ -108,16 +117,13 @@ export default function Item({ color, title, description, image ,stock,id,datosS
           <Typography title={title} gutterBottom variant="h5" component="div">
             {title}
           </Typography>
-
         </CardContent>
       </StyledCardActionArea>
       <StyledCardActions>
         <ActionsWraper>
-        <StockDisponible variant="body2">{`Stock disponible ${stock} `}</StockDisponible>
-
-          <Itemcounter />
-          <BotonComprar id={id} onClick={handleClick}>Comprar</BotonComprar>
-
+          <BotonComprar id={id} onClick={handleClick}>
+            Detalles
+          </BotonComprar>
         </ActionsWraper>
       </StyledCardActions>
     </StyledCard>

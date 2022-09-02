@@ -5,7 +5,7 @@ import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
 import imagenDetalle from "./images/detalles.jpg";
 import React, { useState } from "react";
-
+import Price from "./components/Price";
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -32,6 +32,7 @@ function App() {
         <MenuItem>Catalogo</MenuItem>
         <MenuItem>Contacto</MenuItem>
       </NavBar>
+
       <ItemListContainer
         greeting="Bienvenidos a MIO Sublimacion"
         shadow={colors.primary}
