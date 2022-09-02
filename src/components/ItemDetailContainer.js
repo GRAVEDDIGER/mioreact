@@ -4,13 +4,14 @@ import ItemDetail from "./ItemDetail";
 
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
-  margin: auto;
+  margin: 10rem;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
-  width: 100%;
   justify-content: center;
   overflow: auto;
+  box-shadow: 3px 3px 15px #333;
+  margin-top: 2rem;
 `;
 const StyledDetailsImage = styled.div`
   background-image: url(${(prop) => prop.imagen});
@@ -31,6 +32,7 @@ const StyledDetailsImage = styled.div`
   background-repeat: no-repeat;
   background-size: cover;
   justify-content: space-between;
+  margin-right: 5rem;
   > p {
     margin-bottom: 0;
     text-align: right;
@@ -59,10 +61,18 @@ const StyledDetailsImage = styled.div`
   }
 `;
 const ItemDescription = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  flex-direction: column;
+  flex-wrap: wrap;
   font-size: 22px;
-  margin: 1.5rem;
+  align-items: center;
   text-align: justify;
   padding: 1rem;
+  > p {
+    margin: 1.5rem;
+  }
   > h5 {
     font-size: 30px;
     font-weight: bold;
@@ -85,7 +95,7 @@ function ItemDetailContainer({
         <ItemDetail datos={datos} color={color} />
         <ItemDescription>
           <h3>Descripcion</h3>
-          {datos.description}
+          <p>{datos.description}</p>
         </ItemDescription>
       </ItemDetailWraper>
     );

@@ -10,6 +10,7 @@ const ItemDetailWraper = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
+
   justify-content: space-between;
 `;
 const ImageWraper = styled.div`
@@ -27,10 +28,10 @@ const StyledImage = styled.img`
 const DetailsWraper = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: flex-end;
   text-align: left;
-  margin: 2rem;
+  margin: 5rem;
   flex-wrap: nowrap;
   height: auto;
 `;
