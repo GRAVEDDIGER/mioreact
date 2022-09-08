@@ -5,7 +5,7 @@ export const useResize = (referenciaMenu, referenciaHamburguesa) => {
   window.onresize = () => setWidowSize(window.innerWidth);
 
   useEffect(() => {
-    if (windowSize > 700) {
+    if (windowSize > 800) {
       referenciaMenu.current.classList.add("show");
       referenciaHamburguesa.current.classList.add("rotate");
     } else {

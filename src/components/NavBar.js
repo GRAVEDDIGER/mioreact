@@ -3,6 +3,7 @@ import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
 import CartWidget from "./CartWidget";
+import {Link } from 'react-router-dom'
 
 ///////////////////////////////
 //  STYLED COMPONENTS STYLES //
@@ -21,7 +22,7 @@ const DivImage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  > img {
+  >a> img {
     justify-content: flex-start;
     align-items: center;
     height: 75px;
@@ -81,7 +82,7 @@ const HamburguerButton = styled.button`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     display: flex;
   }
 `;
@@ -118,7 +119,7 @@ const MenuStyled = styled.ul`
   opacity: 0;
   transition: opacity 0.8s ease;
   align-self: flex-end;
-  @media (max-width: 700px) {
+  @media (max-width: 800px) {
     position: absolute;
     top: 0;
     margin-top: ${(props) => props.headerHeight};
@@ -191,11 +192,12 @@ export const MenuItem = ({
   children,
   foreColor,
   colorBackground,
-  handleClick,
+  handleClick,pathName
 }) => {
-  console.log(handleClick);
+  console.log("Path",pathName,"Tipo",typeof pathName);
   return (
     <>
+    <Link to={pathName}>
       <StyledLi foreColor={foreColor} colorBackground={colorBackground}>
         <StyledItemButton
           foreColor={foreColor}
@@ -205,6 +207,7 @@ export const MenuItem = ({
           {children}
         </StyledItemButton>
       </StyledLi>
+      </Link>
     </>
   );
 };
@@ -238,8 +241,11 @@ export default function NavBar({
       headerHeight={headerHeight}
     >
       <DivLogo>
+      
         <DivImage>
+          <Link to="/">
           <img src={logoImage} alt={imageText} />
+          </Link>
         </DivImage>
         <TitleH1> {titleHeader} </TitleH1>
       </DivLogo>

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
-
+import {httpRequest} from '../funciones/consultaaapi'
+import { Loader } from "./loader";
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: 10rem;
@@ -12,6 +14,12 @@ const ItemDetailWraper = styled.div`
   overflow: auto;
   box-shadow: 3px 3px 15px #333;
   margin-top: 2rem;
+  @media (max-width:800px){
+    margin:3rem 3rem;
+  }
+  @media (max-width:500px){
+    margin:3rem 0.5rem;
+  }
 `;
 const StyledDetailsImage = styled.div`
   background-image: url(${(prop) => prop.imagen});
@@ -80,26 +88,47 @@ const ItemDescription = styled.div`
 `;
 function ItemDetailContainer({
   imagen,
-  datos,
-  datosSetter,
   greeting,
   color,
   shadow,
 }) {
-  if (datos) {
+  let {id} =useParams();
+const [data, setData] = useState(null)
+
+async function requestById(e){
+    try {
+      const data = await httpRequest().get(
+        "https://fakestoreapi.com/products/" + e
+      );
+      console.log(data);
+      if (data.error) throw Error(data.statusText);
+      else {
+        setData(data);
+        //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    requestById(id)
+
+  },[id])
     return (
+      
       <ItemDetailWraper color={color}>
         <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
           {greeting}
         </StyledDetailsImage>
-        <ItemDetail datos={datos} color={color} />
-        <ItemDescription>
+          {data ? <ItemDetail datos={data} color={color} />:<Loader/>}
+       {data ? <ItemDescription>
           <h3>Descripcion</h3>
-          <p>{datos.description}</p>
-        </ItemDescription>
-      </ItemDetailWraper>
-    );
+          <p>{data.description}</p>
+        </ItemDescription>:<Loader/>}
+      </ItemDetailWraper>)
+      
+      
   }
-}
+
 
 export default ItemDetailContainer;

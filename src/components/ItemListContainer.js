@@ -3,6 +3,7 @@ import styled from "styled-components";
 import bannerImage from "../images/baner.png";
 import { httpRequest } from "../funciones/consultaaapi";
 import { ItemList } from "./itemlist";
+import { useParams } from "react-router-dom";
 const ItemListWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: auto;
@@ -63,26 +64,25 @@ export const ItemListContainer = ({
   slogan,
   shadow,
   datosSetter,
-  datos,
 }) => {
   const [dataBase, setdataBase] = useState([]);
-  const [stock, setstock] = useState(12);
+  const {category} =useParams()
   useEffect(() => {
-    const url = "https://fakestoreapi.com/products";
+    const urlParam= category ? "/category/"+ encodeURIComponent(category) : "";
+    const url = "https://fakestoreapi.com/products" +urlParam;
     httpRequest()
       .get(url)
       .then((res) => {
         if (!res.error) setdataBase(res);
       });
-  }, []);
-  if (!datos) {
+  }, [category]);
     return (
       <ItemListWraper color={color}>
         <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
           {greeting} <p>{slogan}</p>
         </StyledImage>
-        <ItemList dataBase={dataBase} stock={stock} datosSetter={datosSetter} />
+        <ItemList dataBase={dataBase} datosSetter={datosSetter} />
       </ItemListWraper>
     );
-  }
+  
 };

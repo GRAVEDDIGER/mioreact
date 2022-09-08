@@ -16,8 +16,12 @@ const StarsContainer = styled.div`
   font-size: 1rem;
   font-weight: bold;
   text-align: end;
+  @media (max-width:1000px){
+    justify-content: center;
+    text-align: center;
+  }
 `;
-function Stars({ stars, fraction }) {
+function Stars({ stars, fraction, color}) {
   let estrellas = [];
   for (let i = 0; i < parseInt(stars); i++) {
     estrellas = [...estrellas, true];
@@ -30,8 +34,8 @@ function Stars({ stars, fraction }) {
       <StarsWraper>
         {estrellas.map((estrella) => {
           if (estrella) {
-            return <StarIcon key={uuid()} />;
-          } else return <StarHalfIcon key={uuid()} />;
+            return <StarIcon key={uuid()} style={{fill:color}} />;
+          } else return <StarHalfIcon key={uuid()} style={{color:color}}/>;
         })}
       </StarsWraper>
       {`${stars}.${fraction}`}

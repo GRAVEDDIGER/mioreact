@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import styled from "styled-components";
 import { httpRequest } from "../funciones/consultaaapi";
+import {Link} from 'react-router-dom'
 const ActionsWraper = styled.div`
   display: flex;
   flex-direction: column;
@@ -43,7 +44,8 @@ const StyledCard = styled(Card)`
   display: flex;
   justify-content: space-between;
   flex-direction: column;
-  max-width: 350px;
+width: 300px;
+height: auto;
   @media (max-width: 400px) {
     margin: 0.5rem 0.5rem;
   }
@@ -59,7 +61,9 @@ const StyledCardMedia = styled(CardMedia)`
   text-align: center;
   margin: 2rem 1rem;
   object-fit: scale-down;
+  padding:1rem;
   width: auto !important;
+  >img{width:auto;}
   @media (max-width: 400px) {
     margin: 1rem 0.5rem;
   }
@@ -74,28 +78,23 @@ export default function Item({
   title,
   description,
   image,
-  stockItem,
   id,
   datosSetter,
-  dataBase,
 }) {
   const handleClick = async (e) => {
     try {
       const data = await httpRequest().get(
         "https://fakestoreapi.com/products/" + e.target.id
       );
-      console.log(datosSetter);
       if (data.error) throw Error(data.statusText);
       else {
         datosSetter(data);
-        console.log(data);
         //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
       }
     } catch (error) {
       console.log(error);
     }
   };
-  console.log(dataBase);
   return (
     <StyledCard
       color={color}
@@ -113,9 +112,13 @@ export default function Item({
       </StyledCardActionArea>
       <StyledCardActions>
         <ActionsWraper>
+        <Link to={`/item/${id}`}>
+
           <BotonComprar id={id} onClick={handleClick}>
             Detalles
           </BotonComprar>
+          </Link> 
+
         </ActionsWraper>
       </StyledCardActions>
     </StyledCard>

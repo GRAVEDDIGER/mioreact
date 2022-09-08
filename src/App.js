@@ -5,7 +5,8 @@ import NavBar, { MenuItem } from "./components/NavBar";
 import logo from "./images/miologo.png";
 import imagenDetalle from "./images/detalles.jpg";
 import React, { useState } from "react";
-import Price from "./components/Price";
+import {BrowserRouter,Routes,Route} from 'react-router-dom'
+
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -16,11 +17,11 @@ const colors = {
 };
 function App() {
   const [id, setid] = useState(null);
-  function handleHome(e) {
-    setid(null);
-  }
+ const men = encodeURIComponent("men's clothing");
+ const woman =encodeURIComponent("women's clothing")
   return (
     <div className="App">
+      <BrowserRouter>
       <NavBar
         titleHeader="Mio Sublimacion"
         logoImage={logo}
@@ -30,29 +31,42 @@ function App() {
         foreColor={colors.accent}
         headerHeight="120px"
       >
-        <MenuItem handleClick={handleHome}>Home</MenuItem>
-        <MenuItem>Quienes somos?</MenuItem>
-        <MenuItem>Catalogo</MenuItem>
-        <MenuItem>Contacto</MenuItem>
-      </NavBar>
+        <MenuItem pathName="/">Home</MenuItem>
+        <MenuItem pathName="/category/electronics">Electronics</MenuItem>
+        <MenuItem pathName="/category/jewelery">Jewelery</MenuItem>
+        <MenuItem pathName={`/category/${men}`}>Men's clothing</MenuItem>
+        <MenuItem pathName={`/category/${woman}`}>Women's clothing</MenuItem>
 
-      <ItemListContainer
+      </NavBar>
+<Routes>
+     <Route path="/"element={<ItemListContainer
         greeting="Bienvenidos a MIO Sublimacion"
         shadow={colors.primary}
         slogan="Diseños personalizados segun tus necesidades"
         color={colors.lightBackground}
         datosSetter={setid}
         datos={id}
-      />
-      <ItemDetailContainer
+      />}/>
+           <Route path="/category/:category" element={<ItemListContainer
+        greeting="Bienvenidos a MIO Sublimacion"
+        shadow={colors.primary}
+        slogan="Diseños personalizados segun tus necesidades"
+        color={colors.lightBackground}
+        datosSetter={setid}
+        datos={id}
+      />}/>
+     <Route path="/item/:id" element={<ItemDetailContainer
         imagen={imagenDetalle}
         datos={id}
         datosSetter={setid}
         shadow={colors.primary}
         color={colors.lightBackground}
         greeting="Detalles del producto"
-      />
+      />}/>
+      </Routes>
+    </BrowserRouter>
     </div>
+    
   );
 }
 
