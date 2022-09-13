@@ -1,10 +1,11 @@
-import React from "react";
+import React,{useState} from "react";
 import styled from "styled-components";
 import Typography from "@mui/material/Typography";
 import Stars from "./Stars";
 import { Itemcounter } from "./itemcount";
 import { Button } from "@mui/material";
 import Price from "./Price"
+import {Link} from 'react-router-dom'
 const ItemDetailWraper = styled.div`
   width: 100%;
   background-color: ${(prop) => prop.color};
@@ -81,11 +82,11 @@ const DetailsWraper = styled.div`
 
 `;
 
-function ItemDetail({ datos, color}) {
+function ItemDetail({ datos, color, setData,data}) {
 const estrellas=(Math.trunc(parseInt(datos.rating.rate))) ;
 const fraccion =Math.round((parseFloat(datos.rating.rate)-estrellas)*10);
 console.log("Estrellas",estrellas,"fraccion",fraccion)  
- 
+ const [stockItem, setStockItem] = useState(data.rating.count);
  
 
   console.log("itemDetail",datos.rating)
@@ -105,16 +106,20 @@ console.log("Estrellas",estrellas,"fraccion",fraccion)
 
          <Price price={parseInt(datos.price)*300} color="#2d572c"/>
         <Itemcounter
-          stockItem={datos.rating.count}
+          stockItem={stockItem}
+          setStockItem={setStockItem}
           style={{ marginTop: "2rem" }}
+          setData={setData}
+          data={data}
         />
+        <Link to="/cart">
         <Button
           variant="contained"
           size="large"
           style={{ alignSelf: "center" }}
         >
-          Agregar al carrito
-        </Button>
+Finalizar Compra        </Button>
+</Link>
       </DetailsWraper>
     </ItemDetailWraper>
   );

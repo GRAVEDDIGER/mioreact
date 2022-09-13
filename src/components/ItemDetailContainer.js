@@ -91,6 +91,7 @@ function ItemDetailContainer({
   greeting,
   color,
   shadow,
+
 }) {
   let {id} =useParams();
 const [data, setData] = useState(null)
@@ -120,7 +121,7 @@ async function requestById(e){
         <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
           {greeting}
         </StyledDetailsImage>
-          {data ? <ItemDetail datos={data} color={color} />:<Loader/>}
+          {data ? <ItemDetail datos={data} color={color} setData={setData} data={data}/>:<Loader/>}
        {data ? <ItemDescription>
           <h3>Descripcion</h3>
           <p>{data.description}</p>

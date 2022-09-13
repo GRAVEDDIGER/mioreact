@@ -6,7 +6,7 @@ import logo from "./images/miologo.png";
 import imagenDetalle from "./images/detalles.jpg";
 import React, { useState } from "react";
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
-
+import Cart from './components/cart'
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -63,6 +63,7 @@ function App() {
         color={colors.lightBackground}
         greeting="Detalles del producto"
       />}/>
+      <Route path="/cart" element={<Cart/>} />
       </Routes>
     </BrowserRouter>
     </div>
