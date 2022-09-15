@@ -1,8 +1,8 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
-import {httpRequest} from '../funciones/consultaaapi'
+import { httpRequest } from "../funciones/consultaaapi";
 import { Loader } from "./loader";
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
@@ -14,11 +14,11 @@ const ItemDetailWraper = styled.div`
   overflow: auto;
   box-shadow: 3px 3px 15px #333;
   margin-top: 2rem;
-  @media (max-width:800px){
-    margin:3rem 3rem;
+  @media (max-width: 800px) {
+    margin: 3rem 3rem;
   }
-  @media (max-width:500px){
-    margin:3rem 0.5rem;
+  @media (max-width: 500px) {
+    margin: 3rem 0.5rem;
   }
 `;
 const StyledDetailsImage = styled.div`
@@ -91,12 +91,13 @@ function ItemDetailContainer({
   greeting,
   color,
   shadow,
-
+  cartData,
+  cartSetter,
 }) {
-  let {id} =useParams();
-const [data, setData] = useState(null)
+  let { id } = useParams();
+  const [data, setData] = useState(null);
 
-async function requestById(e){
+  async function requestById(e) {
     try {
       const data = await httpRequest().get(
         "https://fakestoreapi.com/products/" + e
@@ -111,25 +112,29 @@ async function requestById(e){
       console.log(error);
     }
   }
-  useEffect(()=>{
-    requestById(id)
-
-  },[id])
-    return (
-      
-      <ItemDetailWraper color={color}>
-        <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
-          {greeting}
-        </StyledDetailsImage>
-          {data ? <ItemDetail datos={data} color={color} setData={setData} data={data}/>:<Loader/>}
-       {data ? <ItemDescription>
+  useEffect(() => {
+    requestById(id);
+  }, [id]);
+  return (
+    <ItemDetailWraper color={color}>
+      <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
+        {greeting}
+      </StyledDetailsImage>
+      {data ? (
+        <ItemDetail datos={data} color={color} setData={setData} data={data} cartData={cartData} cartSetter={cartSetter}/>
+      ) : (
+        <Loader />
+      )}
+      {data ? (
+        <ItemDescription>
           <h3>Descripcion</h3>
           <p>{data.description}</p>
-        </ItemDescription>:<Loader/>}
-      </ItemDetailWraper>)
-      
-      
-  }
-
+        </ItemDescription>
+      ) : (
+        <Loader />
+      )}
+    </ItemDetailWraper>
+  );
+}
 
 export default ItemDetailContainer;

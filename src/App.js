@@ -17,7 +17,8 @@ const colors = {
 };
 function App() {
   const [id, setid] = useState(null);
- const men = encodeURIComponent("men's clothing");
+const [cart, setCart] = useState([])
+  const men = encodeURIComponent("men's clothing");
  const woman =encodeURIComponent("women's clothing")
   return (
     <div className="App">
@@ -59,6 +60,8 @@ function App() {
         imagen={imagenDetalle}
         datos={id}
         datosSetter={setid}
+        cartSetter={setCart}
+        cartData={cart}
         shadow={colors.primary}
         color={colors.lightBackground}
         greeting="Detalles del producto"

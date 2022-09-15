@@ -29,7 +29,7 @@ const CounterButton = styled.button`
   font-size: 1.5rem;
   box-shadow: 3px 3px 15px gray;
 `;
-export const Itemcounter = ({ setStockItem,stockItem=0 , setData ,data=0}) => {
+export const Itemcounter = ({ setStockItem,stockItem=0 , quantity,setQuantity}) => {
   const [counter, setCounter] = useState(0);
   const handleMinusButtonClick = () => {
     if (counter - 1 > -1) {setCounter(counter - 1);
@@ -40,8 +40,9 @@ export const Itemcounter = ({ setStockItem,stockItem=0 , setData ,data=0}) => {
     if (counter < parseInt(stockItem)) {setCounter(counter + 1);
       setStockItem(stockItem-1) 
     };
-console.log("VER ACA",data)
   }
+  setQuantity(counter)
+
   return (
     <ItemCounterDiv>
       <Typography
