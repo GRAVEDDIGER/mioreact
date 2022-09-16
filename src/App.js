@@ -7,6 +7,7 @@ import imagenDetalle from "./images/detalles.jpg";
 import React, { useState } from "react";
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Cart from './components/cart'
+import CartProvider, { CartContext } from "./components/CartContext";
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -21,6 +22,7 @@ const [cart, setCart] = useState([])
   const men = encodeURIComponent("men's clothing");
  const woman =encodeURIComponent("women's clothing")
   return (
+    <CartProvider>
     <div className="App">
       <BrowserRouter>
       <NavBar
@@ -70,6 +72,7 @@ const [cart, setCart] = useState([])
       </Routes>
     </BrowserRouter>
     </div>
+    </CartProvider>
     
   );
 }

@@ -91,12 +91,10 @@ function ItemDetailContainer({
   greeting,
   color,
   shadow,
-  cartData,
-  cartSetter,
+
 }) {
   let { id } = useParams();
   const [data, setData] = useState(null);
-
   async function requestById(e) {
     try {
       const data = await httpRequest().get(
@@ -121,7 +119,7 @@ function ItemDetailContainer({
         {greeting}
       </StyledDetailsImage>
       {data ? (
-        <ItemDetail datos={data} color={color} setData={setData} data={data} cartData={cartData} cartSetter={cartSetter}/>
+        <ItemDetail datos={data} color={color} setData={setData} data={data} />
       ) : (
         <Loader />
       )}

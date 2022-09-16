@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import styled from "styled-components";
 import Typography from "@mui/material/Typography";
 import Stars from "./Stars";
@@ -7,6 +7,7 @@ import { Button } from "@mui/material";
 import Price from "./Price";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
+import { CartContext } from "./CartContext";
 const ItemDetailWraper = styled.div`
   width: 100%;
   background-color: ${(prop) => prop.color};
@@ -83,12 +84,14 @@ const DetailsWraper = styled.div`
   }
 `;
 
-function ItemDetail({ datos, color, setData, data, cartData, cartSetter }) {
-const actualPage=useParams();
+function ItemDetail({ datos, color, setData, data }) {
+  const [cartData,cartSetter] =useContext(CartContext)
+  const actualPage=useParams();
   const estrellas = Math.trunc(parseInt(datos.rating.rate));
   const fraccion = Math.round((parseFloat(datos.rating.rate) - estrellas) * 10);
   console.log("Estrellas", estrellas, "fraccion", fraccion);
   const [stockItem, setStockItem] = useState(data.rating.count);
+  
   const [quantity, setQuantity] = useState(0);
   // const [condicion, setCondicion] = useState(false);
 let condicion=false;
