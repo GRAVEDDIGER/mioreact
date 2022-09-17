@@ -22,7 +22,6 @@ export const ItemList = ({ dataBase, datosSetter }) => {
               stockItem={item.rating.count}
               key={item.id}
               id={item.id}
-              dataBase={dataBase}
               datosSetter={datosSetter}
             />
           );

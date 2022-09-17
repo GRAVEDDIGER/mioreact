@@ -74,7 +74,7 @@ const StyledCardActions = styled(CardActions)`
 `;
 
 export default function Item({
-  color,
+  
   title,
   description,
   image,
@@ -89,7 +89,6 @@ export default function Item({
       if (data.error) throw Error(data.statusText);
       else {
         datosSetter(data);
-        //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
       }
     } catch (error) {
       console.log(error);
@@ -97,7 +96,6 @@ export default function Item({
   };
   return (
     <StyledCard
-      color={color}
       title={title}
       description={description}
       image={image}

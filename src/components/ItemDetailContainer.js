@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
 import { httpRequest } from "../funciones/consultaaapi";
 import { Loader } from "./loader";
+import {ColorsContext} from "./ColorsContext"
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: 10rem;
@@ -89,7 +90,6 @@ const ItemDescription = styled.div`
 function ItemDetailContainer({
   imagen,
   greeting,
-  color,
   shadow,
 
 }) {
@@ -100,7 +100,6 @@ function ItemDetailContainer({
       const data = await httpRequest().get(
         "https://fakestoreapi.com/products/" + e
       );
-      console.log(data);
       if (data.error) throw Error(data.statusText);
       else {
         setData(data);
@@ -110,16 +109,17 @@ function ItemDetailContainer({
       console.log(error);
     }
   }
+  const [colors] =useContext(ColorsContext)
   useEffect(() => {
     requestById(id);
   }, [id]);
   return (
-    <ItemDetailWraper color={color}>
-      <StyledDetailsImage imagen={imagen} color={color} shadow={shadow}>
+    <ItemDetailWraper color={colors.lightBackground}>
+      <StyledDetailsImage imagen={imagen} color={colors.lightBackground} shadow={shadow}>
         {greeting}
       </StyledDetailsImage>
       {data ? (
-        <ItemDetail datos={data} color={color} setData={setData} data={data} />
+        <ItemDetail datos={data}  setData={setData}  />
       ) : (
         <Loader />
       )}

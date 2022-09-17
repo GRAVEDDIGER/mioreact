@@ -8,6 +8,8 @@ import Price from "./Price";
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { CartContext } from "./CartContext";
+import {ColorsContext} from "./ColorsContext"
+
 const ItemDetailWraper = styled.div`
   width: 100%;
   background-color: ${(prop) => prop.color};
@@ -84,41 +86,29 @@ const DetailsWraper = styled.div`
   }
 `;
 
-function ItemDetail({ datos, color, setData, data }) {
-  const [cartData,addItem,removeItem,clearCart] =useContext(CartContext)
+function ItemDetail({ datos }) {
+  const [cartData,addItem] =useContext(CartContext)
   const actualPage=useParams();
   const estrellas = Math.trunc(parseInt(datos.rating.rate));
   const fraccion = Math.round((parseFloat(datos.rating.rate) - estrellas) * 10);
-  console.log("Estrellas", estrellas, "fraccion", fraccion);
-  const [stockItem, setStockItem] = useState(data.rating.count);
-  
+  const [stockItem, setStockItem] = useState(datos.rating.count);
   const [quantity, setQuantity] = useState(0);
-  // const [condicion, setCondicion] = useState(false);
+  const [colors] =useContext(ColorsContext)
+
 let condicion=false;
   const onAdd = () => {
     addItem(datos.id,datos.price,datos.title,quantity)
-    // cartSetter([
-    //   ...cartData,
-    //   {
-    //     id: datos.id,
-    //     title: datos.title,
-    //     price: datos.price,
-    //     quantity: quantity,
-    //   },
-    // ]);
   };
   if (cartData.length > 0) {
     cartData.forEach((item) => {
       if (item.id === datos.id) {
         condicion=true;
-        console.log("adrian",condicion)
       }
     });
   }
-  console.log("itemDetail", datos.rating);
-  console.log("decicion", condicion);
+
   return (
-    <ItemDetailWraper color={color}>
+    <ItemDetailWraper color={colors.lightBackground}>
       <ImageWraper>
         <StyledImage src={datos.image} />
       </ImageWraper>
@@ -128,7 +118,7 @@ let condicion=false;
         </Typography>
         <Stars stars={estrellas} fraction={fraccion} color="#FFBF00" />
 
-        <Price price={parseInt(datos.price) * 300} color="#2d572c" />
+        <Price price={parseInt(datos.price) * 300} color={colors.strongAccent} />
         <Itemcounter
           stockItem={stockItem}
           setStockItem={setStockItem}
@@ -136,12 +126,12 @@ let condicion=false;
           setQuantity={setQuantity}
           quantity={quantity}
         />
-        <Link to={(condicion) ? "/cart":actualPage}>
+        <Link to={(condicion) ? "/cart":actualPage} style={{textDecoration:"none"}}>
           <Button
             variant="contained"
             size="large"
             style={{ alignSelf: "center" }}
-            onClick={onAdd}
+            onClick={!condicion ? onAdd:null}
           >
             {(condicion) ? "Finalizar Compra": "Agregar al carrito"}
           </Button>

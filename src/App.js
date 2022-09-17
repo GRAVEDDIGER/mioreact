@@ -7,7 +7,10 @@ import imagenDetalle from "./images/detalles.jpg";
 import React, { useState } from "react";
 import {BrowserRouter,Routes,Route} from 'react-router-dom'
 import Cart from './components/cart'
-import CartProvider, { CartContext } from "./components/CartContext";
+import CartProvider from "./components/CartContext";
+import CartImage from './images/cart.jpg'
+import ColorsContextProvider from "./components/ColorsContext";
+
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -22,6 +25,7 @@ const [cart, setCart] = useState([])
   const men = encodeURIComponent("men's clothing");
  const woman =encodeURIComponent("women's clothing")
   return (
+    <ColorsContextProvider>
     <CartProvider>
     <div className="App">
       <BrowserRouter>
@@ -68,12 +72,12 @@ const [cart, setCart] = useState([])
         color={colors.lightBackground}
         greeting="Detalles del producto"
       />}/>
-      <Route path="/cart" element={<Cart/>} />
+      <Route path="/cart" element={<Cart image={CartImage} priceColor={colors.accent}/>} />
       </Routes>
     </BrowserRouter>
     </div>
     </CartProvider>
-    
+    </ColorsContextProvider>
   );
 }
 

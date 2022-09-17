@@ -194,7 +194,6 @@ export const MenuItem = ({
   colorBackground,
   handleClick,pathName
 }) => {
-  console.log("Path",pathName,"Tipo",typeof pathName);
   return (
     <>
     <Link to={pathName}>
@@ -255,7 +254,7 @@ export default function NavBar({
         </HamburguerButton>
         {/* <div> */}
         <MenuWraper>
-          <CartWidget></CartWidget>
+          <CartWidget  />
           <MenuStyled
             ref={menuReference}
             colorBackground={colorBackground}

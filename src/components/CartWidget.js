@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { BsCart4 } from "react-icons/bs";
+import Badge from "@mui/material/Badge";
+import { CartContext } from "./CartContext";
+import { Link } from "react-router-dom";
 const CartWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -34,10 +37,17 @@ const CartWrap = styled.div`
 `;
 
 const CartWidget = () => {
+  const [cartData] = useContext(CartContext);
   return (
+    
     <CartWrap>
       <button>ingresar</button>
-      <BsCart4 />
+      {cartData.length ?( 
+      <Link to="/cart" style={{ textDecoration: "none" ,color:"#fff"}}>
+           <Badge badgeContent={cartData.length} color="secondary">
+          <BsCart4  />
+        </Badge>
+      </Link>):null}
     </CartWrap>
   );
 };

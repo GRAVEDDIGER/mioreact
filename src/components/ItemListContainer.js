@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import bannerImage from "../images/baner.png";
 import { httpRequest } from "../funciones/consultaaapi";
 import { ItemList } from "./itemlist";
 import { useParams } from "react-router-dom";
+import { ColorsContext } from "./ColorsContext";
 const ItemListWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: auto;
@@ -65,6 +66,7 @@ export const ItemListContainer = ({
   shadow,
   datosSetter,
 }) => {
+  const [colors]= useContext(ColorsContext)
   const [dataBase, setdataBase] = useState([]);
   const {category} =useParams()
   useEffect(() => {
@@ -77,8 +79,8 @@ export const ItemListContainer = ({
       });
   }, [category]);
     return (
-      <ItemListWraper color={color}>
-        <StyledImage color={color} imagen={bannerImage} shadow={shadow}>
+      <ItemListWraper color={colors.lightBackground}>
+        <StyledImage color={colors.lightBackground} imagen={bannerImage} shadow={shadow}>
           {greeting} <p>{slogan}</p>
         </StyledImage>
         <ItemList dataBase={dataBase} datosSetter={datosSetter} />
