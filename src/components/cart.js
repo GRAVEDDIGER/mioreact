@@ -53,7 +53,7 @@ const TituloItems = styled.h3`
 `;
 const Holder = styled.div`
   display: flex;
-  background-color: #d5d5d5;
+  background-color: ${props=>props.backColor};
   box-shadow: 3px 0px 15px #333;
   padding: 1rem 2rem;
   border-radius: 15%;
@@ -62,7 +62,8 @@ const Holder = styled.div`
   align-items: center;
   align-content: space-around;
   font-family: "Roboto" sans-serif;
-
+color:#fff;
+text-shadow: 2px 2px 15px #333;
   font-weight: bold;
   font-size: 1.5em;
   margin: 1rem 0.5rem;
@@ -71,6 +72,7 @@ const Holder = styled.div`
     font-weight: 600;
     margin: 0;
     padding: 0;
+    font-size: 1rem;
     > li {
       font-family: "Roboto" sans-serif;
       text-decoration: none;
@@ -129,46 +131,44 @@ function Cart({ image }) {
         <br />
         {cartData.length ? (
           <BubbleWrapper>
-            <Holder priceColor={colors.strongAccent}>
+            <Holder backColor={colors.secondary} priceColor={colors.strongAccent}>
               <strong>Precio Total: </strong>{" "}
               <Price price={priceState} color={colors.strongAccent} />
             </Holder>
-            <Holder>
+            <Holder backColor={colors.secondary}>
               <ul>
               <li>
                   <input type="radio" name="cuotas" value="1" onChange={(e)=>handleCuotasChange(e)}/>
                   <label htmlFor="cuotas">
-                    {" "}
-                    1 pago{" "}
+                    
+                    1 pago
                     {pesosArgentinos(priceState)}$
-                  </label>{" "}
+                  </label>
                 </li>
                 <li>
                   <input type="radio" name="cuotas" value="3" onChange={(e)=>handleCuotasChange(e)}/>
                   <label htmlFor="cuotas">
-                    {" "}
-                    3 cuotas con tarjeta{" "}
+                    3 cuotas con tarjeta
                     {pesosArgentinos(intrests(priceState, 3))}$
-                  </label>{" "}
+                  </label>
                 </li>
                 <li>
                   <input type="radio" name="cuotas" value="6"  onChange={(e)=>handleCuotasChange(e)}/>
                   <label htmlFor="cuotas">
-                    6 cuotas con tarjeta{" "}
-                    {pesosArgentinos(intrests(priceState, 6))}$
+                    6 cuotas con tarjeta {pesosArgentinos(intrests(priceState, 6))}$
                   </label>
                 </li>
                 <li>
                   <input type="radio" name="cuotas" value="9" onChange={(e)=>handleCuotasChange(e)}/>
                   <label htmlFor="cuotas">
-                    9 cuotas con tarjeta{" "}
+                    9 cuotas con tarjeta
                     {pesosArgentinos(intrests(priceState, 9))}$
                   </label>
                 </li>
                 <li>
                   <input type="radio" name="cuotas" value="12" onChange={(e)=>handleCuotasChange(e)}/>
                   <label htmlFor="cuotas">
-                    12 cuotas con tarjeta{" "}
+                    12 cuotas con tarjeta
                     {pesosArgentinos(intrests(priceState, 12))}$
                   </label>
                 </li>
