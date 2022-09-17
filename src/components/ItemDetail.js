@@ -85,7 +85,7 @@ const DetailsWraper = styled.div`
 `;
 
 function ItemDetail({ datos, color, setData, data }) {
-  const [cartData,cartSetter] =useContext(CartContext)
+  const [cartData,addItem,removeItem,clearCart] =useContext(CartContext)
   const actualPage=useParams();
   const estrellas = Math.trunc(parseInt(datos.rating.rate));
   const fraccion = Math.round((parseFloat(datos.rating.rate) - estrellas) * 10);
@@ -96,15 +96,16 @@ function ItemDetail({ datos, color, setData, data }) {
   // const [condicion, setCondicion] = useState(false);
 let condicion=false;
   const onAdd = () => {
-    cartSetter([
-      ...cartData,
-      {
-        id: datos.id,
-        title: datos.title,
-        price: datos.price,
-        quantity: quantity,
-      },
-    ]);
+    addItem(datos.id,datos.price,datos.title,quantity)
+    // cartSetter([
+    //   ...cartData,
+    //   {
+    //     id: datos.id,
+    //     title: datos.title,
+    //     price: datos.price,
+    //     quantity: quantity,
+    //   },
+    // ]);
   };
   if (cartData.length > 0) {
     cartData.forEach((item) => {
@@ -145,6 +146,7 @@ let condicion=false;
             {(condicion) ? "Finalizar Compra": "Agregar al carrito"}
           </Button>
         </Link>
+
       </DetailsWraper>
     </ItemDetailWraper>
   );
