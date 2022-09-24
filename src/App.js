@@ -10,7 +10,7 @@ import Cart from './components/cart'
 import CartProvider from "./components/CartContext";
 import CartImage from './images/cart.jpg'
 import ColorsContextProvider from "./components/ColorsContext";
-
+import DataContextProvider from "./components/dataContext";
 const colors = {
   primary: "#9C805C",
   secondary: "#E8C9A0",
@@ -25,6 +25,7 @@ const [cart, setCart] = useState([])
   const men = encodeURIComponent("men's clothing");
  const woman =encodeURIComponent("women's clothing")
   return (
+    <DataContextProvider>
     <ColorsContextProvider>
     <CartProvider>
     <div className="App">
@@ -78,6 +79,7 @@ const [cart, setCart] = useState([])
     </div>
     </CartProvider>
     </ColorsContextProvider>
+    </DataContextProvider>
   );
 }
 

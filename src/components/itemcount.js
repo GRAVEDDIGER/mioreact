@@ -29,8 +29,9 @@ const CounterButton = styled.button`
   font-size: 1.5rem;
   box-shadow: 3px 3px 15px gray;
 `;
-export const Itemcounter = ({ setStockItem,stockItem=0 , quantity,setQuantity}) => {
+export const Itemcounter = ({ quantity,setQuantity, datos}) => {
   const [counter, setCounter] = useState(0);
+  const [stockItem, setStockItem] = useState(parseInt(datos.rating.count||0))
   const handleMinusButtonClick = () => {
     if (counter - 1 > -1) {setCounter(counter - 1);
     }

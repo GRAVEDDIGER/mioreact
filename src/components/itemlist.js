@@ -23,6 +23,7 @@ export const ItemList = ({ dataBase, datosSetter }) => {
               key={item.id}
               id={item.id}
               datosSetter={datosSetter}
+              
             />
           );
         })

@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
-import { httpRequest } from "../funciones/consultaaapi";
+// import { httpRequest } from "../funciones/consultaaapi";
 import { Loader } from "./loader";
 import {ColorsContext} from "./ColorsContext"
+import { DataContext } from "./dataContext";
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: 10rem;
@@ -94,32 +95,41 @@ function ItemDetailContainer({
 
 }) {
   let { id } = useParams();
-  const [data, setData] = useState(null);
-  async function requestById(e) {
-    try {
-      const data = await httpRequest().get(
-        "https://fakestoreapi.com/products/" + e
-      );
-      if (data.error) throw Error(data.statusText);
-      else {
-        setData(data);
-        //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  const [colors] =useContext(ColorsContext)
-  useEffect(() => {
-    requestById(id);
-  }, [id]);
+  const [dataContext] =useContext(DataContext);
+    const [colors] =useContext(ColorsContext);
+    const [data, setData] = useState(null)
+useEffect(() => {
+  const temp = Object.values(dataContext).filter(item=> parseInt(item.id)===parseInt(id))
+  console.log("id",id,temp)
+  setData(temp[0])
+  console.log(data)
+}, [id,data,dataContext])
+
+  // const [data, setData] = useState(null);
+  // async function requestById(e) {
+  //   try {
+  //     const data = await httpRequest().get(
+  //       "https://fakestoreapi.com/products/" + e
+  //     );
+  //     if (data.error) throw Error(data.statusText);
+  //     else {
+  //       setData(data);
+  //       //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
+  //     }
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
+  // useEffect(() => {
+  //   requestById(id);
+  // }, [id]);
   return (
     <ItemDetailWraper color={colors.lightBackground}>
       <StyledDetailsImage imagen={imagen} color={colors.lightBackground} shadow={shadow}>
         {greeting}
       </StyledDetailsImage>
       {data ? (
-        <ItemDetail datos={data}  setData={setData}  />
+        <ItemDetail datos={data}    />
       ) : (
         <Loader />
       )}

@@ -1,10 +1,23 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import styled from "styled-components";
 import bannerImage from "../images/baner.png";
-import { httpRequest } from "../funciones/consultaaapi";
+// import { httpRequest } from "../funciones/consultaaapi";
 import { ItemList } from "./itemlist";
 import { useParams } from "react-router-dom";
 import { ColorsContext } from "./ColorsContext";
+import { initializeApp } from "firebase/app";
+import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { DataContext } from "./dataContext";
+const firebaseConfig = {
+  apiKey: "AIzaSyA_TpKjxfrKGsNESMwsyB-ymtS0BtMvqpc",
+  authDomain: "miodata-d53a3.firebaseapp.com",
+  projectId: "miodata-d53a3",
+  storageBucket: "miodata-d53a3.appspot.com",
+  messagingSenderId: "668742994113",
+  appId: "1:668742994113:web:d08190b9c591db7a8cec40",
+  measurementId: "G-D5G6PT3D6E",
+};
+
 const ItemListWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: auto;
@@ -61,30 +74,54 @@ const StyledImage = styled.div`
 
 export const ItemListContainer = ({
   greeting,
-  color,
   slogan,
   shadow,
   datosSetter,
 }) => {
-  const [colors]= useContext(ColorsContext)
+  const [, setDataContext] = useContext(DataContext);
+  const [colors] = useContext(ColorsContext);
   const [dataBase, setdataBase] = useState([]);
-  const {category} =useParams()
+  const { category } = useParams();
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const loadItems = useCallback(async (category) => {
+    let matriz = [];
+    const datos = await getDocs(collection(db, "products"));
+    console.log(datos);
+    datos.forEach((documento) => (matriz = [...matriz, documento.data()]));
+    console.log(typeof matriz[0].products);
+    let filtredData;
+    if (category)
+      filtredData = Object.values(matriz[0].products).filter(
+        (producto) => producto.category === category
+      );
+    else filtredData = Object.values(matriz[0].products);
+    console.log(category, "  ", filtredData);
+    setdataBase(filtredData);
+    setDataContext(filtredData);
+  }, [setdataBase,setDataContext,db]);
   useEffect(() => {
-    const urlParam= category ? "/category/"+ encodeURIComponent(category) : "";
-    const url = "https://fakestoreapi.com/products" +urlParam;
-    httpRequest()
-      .get(url)
-      .then((res) => {
-        if (!res.error) setdataBase(res);
-      });
-  }, [category]);
-    return (
-      <ItemListWraper color={colors.lightBackground}>
-        <StyledImage color={colors.lightBackground} imagen={bannerImage} shadow={shadow}>
-          {greeting} <p>{slogan}</p>
-        </StyledImage>
-        <ItemList dataBase={dataBase} datosSetter={datosSetter} />
-      </ItemListWraper>
-    );
-  
+    // USO CON API REST
+    // const urlParam= category ? "/category/"+ encodeURIComponent(category) : "";
+    // const url = "https://fakestoreapi.com/products" +urlParam;
+    // httpRequest()
+    //   .get(url)
+    //   .then((res) => {
+    //     if (!res.error) setdataBase(res);})
+
+    //USO CON FIREBASE
+    loadItems(category);
+  }, [loadItems,category]);
+  return (
+    <ItemListWraper color={colors.lightBackground}>
+      <StyledImage
+        color={colors.lightBackground}
+        imagen={bannerImage}
+        shadow={shadow}
+      >
+        {greeting} <p>{slogan}</p>
+      </StyledImage>
+      <ItemList dataBase={dataBase} datosSetter={datosSetter} />
+    </ItemListWraper>
+  );
 };

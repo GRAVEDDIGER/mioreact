@@ -91,7 +91,6 @@ function ItemDetail({ datos }) {
   const actualPage=useParams();
   const estrellas = Math.trunc(parseInt(datos.rating.rate));
   const fraccion = Math.round((parseFloat(datos.rating.rate) - estrellas) * 10);
-  const [stockItem, setStockItem] = useState(datos.rating.count);
   const [quantity, setQuantity] = useState(0);
   const [colors] =useContext(ColorsContext)
 
@@ -119,13 +118,12 @@ let condicion=false;
         <Stars stars={estrellas} fraction={fraccion} color="#FFBF00" />
 
         <Price price={parseInt(datos.price) * 300} color={colors.strongAccent} />
-        <Itemcounter
-          stockItem={stockItem}
-          setStockItem={setStockItem}
+        {datos ? <Itemcounter
+          datos={datos}
           style={{ marginTop: "2rem" }}
           setQuantity={setQuantity}
           quantity={quantity}
-        />
+        />:null}
         <Link to={(condicion) ? "/cart":actualPage} style={{textDecoration:"none"}}>
           <Button
             variant="contained"
