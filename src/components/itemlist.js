@@ -9,7 +9,7 @@ const StyledDiv = styled.div`
   flex-wrap: wrap;
   justify-content: center;
 `;
-export const ItemList = ({ dataBase, datosSetter }) => {
+export const ItemList = ({ dataBase }) => {
   return (
     <StyledDiv>
       {dataBase.length > 0 ? (
@@ -22,7 +22,6 @@ export const ItemList = ({ dataBase, datosSetter }) => {
               stockItem={item.rating.count}
               key={item.id}
               id={item.id}
-              datosSetter={datosSetter}
               
             />
           );

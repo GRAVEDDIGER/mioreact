@@ -6,7 +6,13 @@ import { ItemList } from "./itemlist";
 import { useParams } from "react-router-dom";
 import { ColorsContext } from "./ColorsContext";
 import { initializeApp } from "firebase/app";
-import { getFirestore, getDocs, collection } from "firebase/firestore";
+import {
+  getFirestore,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import { DataContext } from "./dataContext";
 const firebaseConfig = {
   apiKey: "AIzaSyA_TpKjxfrKGsNESMwsyB-ymtS0BtMvqpc",
@@ -17,6 +23,8 @@ const firebaseConfig = {
   appId: "1:668742994113:web:d08190b9c591db7a8cec40",
   measurementId: "G-D5G6PT3D6E",
 };
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 const ItemListWraper = styled.div`
   background-color: ${(props) => props.color};
@@ -82,36 +90,36 @@ export const ItemListContainer = ({
   const [colors] = useContext(ColorsContext);
   const [dataBase, setdataBase] = useState([]);
   const { category } = useParams();
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const loadItems = useCallback(async (category) => {
-    let matriz = [];
-    const datos = await getDocs(collection(db, "products"));
-    console.log(datos);
-    datos.forEach((documento) => (matriz = [...matriz, documento.data()]));
-    console.log(typeof matriz[0].products);
-    let filtredData;
-    if (category)
-      filtredData = Object.values(matriz[0].products).filter(
-        (producto) => producto.category === category
-      );
-    else filtredData = Object.values(matriz[0].products);
-    console.log(category, "  ", filtredData);
-    setdataBase(filtredData);
-    setDataContext(filtredData);
-  }, [setdataBase,setDataContext,db]);
-  useEffect(() => {
-    // USO CON API REST
-    // const urlParam= category ? "/category/"+ encodeURIComponent(category) : "";
-    // const url = "https://fakestoreapi.com/products" +urlParam;
-    // httpRequest()
-    //   .get(url)
-    //   .then((res) => {
-    //     if (!res.error) setdataBase(res);})
 
-    //USO CON FIREBASE
+  const loadItems = useCallback(
+    async (category) => {
+      let dataContextArray = [];
+      let firebaseId;
+      let q;
+      if (category) {
+        q = query(
+          collection(db, "products"),
+          where("category", "==", category)
+        );
+      } else {
+        q = query(collection(db, "products"), where("category", "!=", null));
+      }
+      const firebaseData = await getDocs(q);
+      firebaseData.forEach((firebaseDoc) => {
+        firebaseId = firebaseDoc.id;
+        let documentData = firebaseDoc.data();
+        documentData.id = firebaseId;
+        dataContextArray = [...dataContextArray, documentData];
+      });
+      let filtredData = Object.values(dataContextArray);
+      setdataBase(filtredData);
+      setDataContext(filtredData);
+    },
+    [setdataBase, setDataContext]
+  );
+  useEffect(() => {
     loadItems(category);
-  }, [loadItems,category]);
+  }, [loadItems, category]);
   return (
     <ItemListWraper color={colors.lightBackground}>
       <StyledImage
@@ -121,7 +129,7 @@ export const ItemListContainer = ({
       >
         {greeting} <p>{slogan}</p>
       </StyledImage>
-      <ItemList dataBase={dataBase} datosSetter={datosSetter} />
+      <ItemList dataBase={dataBase} />
     </ItemListWraper>
   );
 };

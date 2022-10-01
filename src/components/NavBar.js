@@ -252,7 +252,6 @@ export default function NavBar({
         <HamburguerButton onClick={toggleMenu}>
           <HamburguerStyled ref={hamburguerIcon} isActive={false} />
         </HamburguerButton>
-        {/* <div> */}
         <MenuWraper>
           <CartWidget  />
           <MenuStyled
@@ -265,7 +264,6 @@ export default function NavBar({
           </MenuStyled>
         </MenuWraper>
       </HamburguerWraper>
-      {/* </div> */}
     </HeaderStyled>
   );
 }

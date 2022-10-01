@@ -6,12 +6,12 @@ export const CartContext  =createContext();
 function CartProvider({children}) {
   const [cartData, cartSetter] = useState([])
   const isOnArray =(id)=>{
-    let condicion =false;
+    let isIdOnCart =false;
 cartData.forEach(item=>{
-    if (item.id === id) condicion= true
+    if (item.id === id) isIdOnCart= true
     
 })
-return condicion
+return isIdOnCart
   }
   const addItem =(id,price,title,quantity)=>{
     if (!isOnArray(id)&&quantity&&title&&price&&id) cartSetter([...cartData,{id,price,title,quantity}]) 

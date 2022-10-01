@@ -4,6 +4,7 @@ import { BsCart4 } from "react-icons/bs";
 import Badge from "@mui/material/Badge";
 import { CartContext } from "./CartContext";
 import { Link } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 const CartWrap = styled.div`
   display: flex;
   flex-direction: row;
@@ -38,16 +39,21 @@ const CartWrap = styled.div`
 
 const CartWidget = () => {
   const [cartData] = useContext(CartContext);
+  const [auth] = useContext(AuthContext);
   return (
-    
     <CartWrap>
-      <button>ingresar</button>
-      {cartData.length ?( 
-      <Link to="/cart" style={{ textDecoration: "none" ,color:"#fff"}}>
-           <Badge badgeContent={cartData.length} color="secondary">
-          <BsCart4  />
-        </Badge>
-      </Link>):null}
+      <Link to="/login" style={{ textDecoration: "none", color: "#fff" }}>
+        <button>
+          {auth.name ? `Bienvenido ${auth.name}` : "Ingresar/Registrarse"}
+        </button>
+      </Link>
+      {cartData.length ? (
+        <Link to="/cart" style={{ textDecoration: "none", color: "#fff" }}>
+          <Badge badgeContent={cartData.length} color="secondary">
+            <BsCart4 />
+          </Badge>
+        </Link>
+      ) : null}
     </CartWrap>
   );
 };

@@ -7,6 +7,13 @@ import Price from "./Price";
 import { CartContext } from "./CartContext";
 import { ColorsContext } from "./ColorsContext";
 import { pesosArgentinos } from "../funciones/pesosargentinos";
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
+import { addDocument, updateStock } from "../funciones/firebase";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { getProductDocument } from "../funciones/firebase";
+
 const StyledImageContainer = styled.div`
   display: flex;
   background-size: cover;
@@ -83,7 +90,7 @@ const StyledTable = styled.table`
   padding: 2rem;
   box-shadow: 3px 3px 15px #333;
 `;
-const TituloItems = styled.h2`
+const ItemsTitle = styled.h2`
   font-size: 2rem;
 
   font-family: "Roboto" sans-serif;
@@ -91,24 +98,60 @@ const TituloItems = styled.h2`
   text-align: center;
 `;
 const EmptyCart = styled.h3`
-font-size: 2rem;
-font-weight: bold;
-font-family: "Roboto" sans-serif;
-
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: "Roboto" sans-serif;
 `;
 function Cart({ image }) {
-  const [cartData] = useContext(CartContext);
+  const [cartData, , , clearCart] = useContext(CartContext);
   const [colors] = useContext(ColorsContext);
+  const [auth] = useContext(AuthContext);
+  const navigate = useNavigate();
   let priceState = 0;
   cartData.forEach((item) => {
     priceState += parseFloat(item.price) * 300 * parseInt(item.quantity);
   });
-  const [, setCuotas] = useState(1);
-  const handleCuotasChange = (e) => setCuotas(e.target.value);
-  const intrests = (price, cuotas) => {
-    let interesesMensuales = (price * 60) / 100 / 12;
-    let totalConIntereses = price + interesesMensuales * cuotas;
-    return parseInt(totalConIntereses / cuotas);
+  const [quota, setQuota] = useState("1");
+  const handleQuotasChange = (e) => setQuota(e.target.value);
+  const intrests = (price, quotas) => {
+    let montlyFee = (price * 60) / 100 / 12;
+    let totalFee = price + montlyFee * quotas;
+    return parseInt(totalFee / quotas);
+  };
+
+  const orderFinalized = (text) => toast(text);
+  const handleClick = async (e) => {
+    console.log(auth);
+    if (auth.mail === "") navigate("/login");
+    else {
+      const response = await addDocument({
+        items: { ...cartData },
+        total: priceState,
+        date: new Date(),
+        user: { ...auth },
+        paymentMethod: {
+          quotas: quota,
+          quotaValue: intrests(priceState, quota),
+          finalPrice: intrests(priceState, quota) * quota,
+        },
+      });
+      cartData.forEach(async (item) => {
+        const datoUpdateOrigin = await (
+          await getProductDocument(item.id)
+        ).data();
+        console.log(datoUpdateOrigin);
+        const datoUpdate =
+          parseInt(datoUpdateOrigin.rating.count) - parseInt(item.quantity);
+        console.log(datoUpdate);
+        const actual = datoUpdateOrigin.rating;
+        updateStock(item.id, {
+          rating: { ...actual, count: datoUpdate },
+        });
+      });
+      orderFinalized(`Compra realizada su numero de orden es : ${response.id}`);
+      clearCart();
+      navigate("/");
+    }
   };
   return (
     <>
@@ -116,18 +159,22 @@ function Cart({ image }) {
         <h3>CARRITO DE COMPRAS</h3>
       </StyledImageContainer>
       <StyledWrapper>
-      {cartData.length ? <TituloItems>Lista de Compras</TituloItems>:null}
+        <ToastContainer />
+        {cartData.length ? <ItemsTitle>Lista de Compras</ItemsTitle> : null}
         {cartData.length ? (
-          <StyledTable><tbody>
-            {cartData.map(item =>{
-              return(<CartItem
-                title={item.title}
-                price={item.price}
-                quantity={item.quantity}
-                id={item.id}
-                key={item.id}
-              />);
-            })}
+          <StyledTable>
+            <tbody>
+              {cartData.map((item) => {
+                return (
+                  <CartItem
+                    title={item.title}
+                    price={item.price}
+                    quantity={item.quantity}
+                    id={item.id}
+                    key={item.id}
+                  />
+                );
+              })}
             </tbody>
           </StyledTable>
         ) : (
@@ -135,29 +182,28 @@ function Cart({ image }) {
             Carrito Vacio
           </EmptyCart>
         )}
-     
+
         <br />
         {cartData.length ? (
           <BubbleWrapper>
-            <Holder
-              backColor={colors.secondary}
-              priceColor={colors.strongAccent}
-            >
+            <Holder backColor={colors.primary} priceColor={colors.strongAccent}>
               <strong>Precio Total: </strong>{" "}
-              <Price price={priceState} color={colors.strongAccent} />
+              <Price price={priceState} color={colors.accent} />
             </Holder>
-            <Holder backColor={colors.secondary}>
+            <Holder backColor={colors.primary}>
               <ul>
                 <li>
                   <input
                     type="radio"
                     name="cuotas"
                     value="1"
-                    onChange={(e) => handleCuotasChange(e)}
+                    onChange={(e) => handleQuotasChange(e)}
                   />
                   <label htmlFor="cuotas">
-                    1 pago
-                    {pesosArgentinos(priceState)}$
+                    1 pago de{" "}
+                    <strong style={{ color: "#333", fontWeight: "bold" }}>
+                      {pesosArgentinos(priceState)}$
+                    </strong>
                   </label>
                 </li>
                 <li>
@@ -165,11 +211,13 @@ function Cart({ image }) {
                     type="radio"
                     name="cuotas"
                     value="3"
-                    onChange={(e) => handleCuotasChange(e)}
+                    onChange={(e) => handleQuotasChange(e)}
                   />
                   <label htmlFor="cuotas">
-                    3 cuotas con tarjeta
-                    {pesosArgentinos(intrests(priceState, 3))}$
+                    3 cuotas de{" "}
+                    <strong style={{ color: "#333", fontWeight: "bold" }}>
+                      {pesosArgentinos(intrests(priceState, 3))}$
+                    </strong>
                   </label>
                 </li>
                 <li>
@@ -177,11 +225,13 @@ function Cart({ image }) {
                     type="radio"
                     name="cuotas"
                     value="6"
-                    onChange={(e) => handleCuotasChange(e)}
+                    onChange={(e) => handleQuotasChange(e)}
                   />
                   <label htmlFor="cuotas">
-                    6 cuotas con tarjeta{" "}
-                    {pesosArgentinos(intrests(priceState, 6))}$
+                    6 cuotas de{" "}
+                    <strong style={{ color: "#333", fontWeight: "bold" }}>
+                      {pesosArgentinos(intrests(priceState, 6))}$
+                    </strong>
                   </label>
                 </li>
                 <li>
@@ -189,11 +239,13 @@ function Cart({ image }) {
                     type="radio"
                     name="cuotas"
                     value="9"
-                    onChange={(e) => handleCuotasChange(e)}
+                    onChange={(e) => handleQuotasChange(e)}
                   />
                   <label htmlFor="cuotas">
-                    9 cuotas con tarjeta
-                    {pesosArgentinos(intrests(priceState, 9))}$
+                    9 cuotas de{" "}
+                    <strong style={{ color: "#333", fontWeight: "bold" }}>
+                      {pesosArgentinos(intrests(priceState, 9))}$
+                    </strong>
                   </label>
                 </li>
                 <li>
@@ -201,11 +253,13 @@ function Cart({ image }) {
                     type="radio"
                     name="cuotas"
                     value="12"
-                    onChange={(e) => handleCuotasChange(e)}
+                    onChange={(e) => handleQuotasChange(e)}
                   />
                   <label htmlFor="cuotas">
-                    12 cuotas con tarjeta
-                    {pesosArgentinos(intrests(priceState, 12))}$
+                    12 cuotas de{" "}
+                    <strong style={{ color: "#333", fontWeight: "bold" }}>
+                      {pesosArgentinos(intrests(priceState, 12))}$
+                    </strong>
                   </label>
                 </li>
               </ul>
@@ -213,7 +267,9 @@ function Cart({ image }) {
           </BubbleWrapper>
         ) : null}
         {cartData.length ? (
-          <Button variant="contained">Finalizar Compra</Button>
+          <Button variant="contained" onClick={handleClick}>
+            Finalizar Compra
+          </Button>
         ) : (
           <Link to="/" style={{ textDecoration: "none" }}>
             <Button variant="contained" color="secondary">

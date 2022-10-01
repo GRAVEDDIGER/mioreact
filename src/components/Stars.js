@@ -16,26 +16,28 @@ const StarsContainer = styled.div`
   font-size: 1rem;
   font-weight: bold;
   text-align: end;
-  @media (max-width:1000px){
+  @media (max-width: 1000px) {
     justify-content: center;
     text-align: center;
   }
 `;
-function Stars({ stars, fraction, color}) {
-  let estrellas = [];
+function Stars({ color, firebaseStars }) {
+  let analizeStars = [];
+  let [stars, fraction] = firebaseStars.split(".");
+  fraction = fraction || "0";
   for (let i = 0; i < parseInt(stars); i++) {
-    estrellas = [...estrellas, true];
+    analizeStars = [...analizeStars, true];
   }
-  if (fraction > 0) {
-    estrellas = [...estrellas, false];
+  if (parseInt(fraction) > 0) {
+    analizeStars = [...analizeStars, false];
   }
   return (
     <StarsContainer>
       <StarsWraper>
-        {estrellas.map((estrella) => {
-          if (estrella) {
-            return <StarIcon key={uuid()} style={{fill:color}} />;
-          } else return <StarHalfIcon key={uuid()} style={{color:color}}/>;
+        {analizeStars.map((mappedStar) => {
+          if (mappedStar) {
+            return <StarIcon key={uuid()} style={{ fill: color }} />;
+          } else return <StarHalfIcon key={uuid()} style={{ color: color }} />;
         })}
       </StarsWraper>
       {`${stars}.${fraction}`}

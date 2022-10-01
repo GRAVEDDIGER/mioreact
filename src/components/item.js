@@ -5,7 +5,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea, CardActions } from "@mui/material";
 import styled from "styled-components";
-import { httpRequest } from "../funciones/consultaaapi";
 import {Link} from 'react-router-dom'
 const ActionsWraper = styled.div`
   display: flex;
@@ -14,7 +13,7 @@ const ActionsWraper = styled.div`
   align-content: center;
   align-items: center;
 `;
-const BotonComprar = styled.button`
+const ItemDetailsButton = styled.button`
   background-color: transparent;
   color: #42a5f5;
   padding: 1rem;
@@ -79,21 +78,8 @@ export default function Item({
   description,
   image,
   id,
-  datosSetter,
 }) {
-  const handleClick = async (e) => {
-    try {
-      const data = await httpRequest().get(
-        "https://fakestoreapi.com/products/" + e.target.id
-      );
-      if (data.error) throw Error(data.statusText);
-      else {
-        datosSetter(data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
   return (
     <StyledCard
       title={title}
@@ -112,9 +98,9 @@ export default function Item({
         <ActionsWraper>
         <Link to={`/item/${id}`}>
 
-          <BotonComprar id={id} onClick={handleClick}>
+          <ItemDetailsButton id={id} >
             Detalles
-          </BotonComprar>
+          </ItemDetailsButton>
           </Link> 
 
         </ActionsWraper>

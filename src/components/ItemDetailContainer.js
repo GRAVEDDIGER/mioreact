@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
-// import { httpRequest } from "../funciones/consultaaapi";
 import { Loader } from "./loader";
-import {ColorsContext} from "./ColorsContext"
+import { ColorsContext } from "./ColorsContext";
 import { DataContext } from "./dataContext";
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
@@ -88,51 +87,30 @@ const ItemDescription = styled.div`
     font-weight: bold;
   }
 `;
-function ItemDetailContainer({
-  imagen,
-  greeting,
-  shadow,
-
-}) {
+function ItemDetailContainer({ imagen, greeting, shadow }) {
   let { id } = useParams();
-  const [dataContext] =useContext(DataContext);
-    const [colors] =useContext(ColorsContext);
-    const [data, setData] = useState(null)
-useEffect(() => {
-  const temp = Object.values(dataContext).filter(item=> parseInt(item.id)===parseInt(id))
-  console.log("id",id,temp)
-  setData(temp[0])
-  console.log(data)
-}, [id,data,dataContext])
+  const [dataContext] = useContext(DataContext);
+  const [colors] = useContext(ColorsContext);
+  const [data, setData] = useState(null);
+  useEffect(() => {
+    const temp = dataContext.filter((item) => {
+      console.log(item, "items");
+      if (item.id.trim() === id.trim()) return item;
+    });
+    console.log("id", id, temp);
+    setData(temp[0]);
+  }, [id, data, dataContext]);
 
-  // const [data, setData] = useState(null);
-  // async function requestById(e) {
-  //   try {
-  //     const data = await httpRequest().get(
-  //       "https://fakestoreapi.com/products/" + e
-  //     );
-  //     if (data.error) throw Error(data.statusText);
-  //     else {
-  //       setData(data);
-  //       //aca va la logica que generara el modal. (debere crear una variable de estado para esto)
-  //     }
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-  // useEffect(() => {
-  //   requestById(id);
-  // }, [id]);
   return (
     <ItemDetailWraper color={colors.lightBackground}>
-      <StyledDetailsImage imagen={imagen} color={colors.lightBackground} shadow={shadow}>
+      <StyledDetailsImage
+        imagen={imagen}
+        color={colors.lightBackground}
+        shadow={shadow}
+      >
         {greeting}
       </StyledDetailsImage>
-      {data ? (
-        <ItemDetail datos={data}    />
-      ) : (
-        <Loader />
-      )}
+      {data ? <ItemDetail datos={data} /> : <Loader />}
       {data ? (
         <ItemDescription>
           <h3>Descripcion</h3>
