@@ -15,7 +15,7 @@ const ItemDetailWraper = styled.div`
   overflow: auto;
   box-shadow: 3px 3px 15px #333;
   margin-top: 2rem;
-  @media (max-width: 800px) {
+  @media (max-width: 1200px) {
     margin: 3rem 3rem;
   }
   @media (max-width: 500px) {
@@ -67,6 +67,7 @@ const StyledDetailsImage = styled.div`
   }
   @media (max-width: 400px) {
     width: 100%;
+    font-size: 2.5rem;
   }
 `;
 const ItemDescription = styled.div`

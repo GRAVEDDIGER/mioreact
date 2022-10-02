@@ -75,8 +75,9 @@ const StyledImage = styled.div`
       font-size: 3.5rem;
     }
   }
-  @media (max-width: 400px) {
+  @media (max-width: 410px) {
     width: 100%;
+    font-size: 2rem;
   }
 `;
 

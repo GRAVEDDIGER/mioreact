@@ -25,13 +25,26 @@ const LoginForm = styled.form`
     text-align: center;
     text-shadow: 1px 0px 2rem ${(props) => props.color.secondary};
   }
+  @media (max-width: 720px) {
+    width: 90%;
+    padding: 0.5rem 1.5rem;
+  }
+  @media (max-width: 550px) {
+    width: 90%;
+    margin: 0;
+  }
+  @media (max-width: 450px) {
+    width: 100%;
+    margin: 0 1rem;
+    padding: 0.5rem 1.5rem;
+  }
 `;
 const LoginInputBox = styled.input`
   border-radius: 10px;
   outline: 0;
   border: 2px solid ${(props) => props.backgroundColor.primary};
   background-color: ${(props) => props.backgroundColor.lightBackground};
-  width: 300px;
+  width: 100%;
   font-size: 1.5rem;
   text-align: center;
   margin-bottom: 0;
@@ -50,12 +63,27 @@ const RegisterDiv = styled.div`
   > input {
     margin: 0 0.5rem;
   }
+  @media (max-width: 950px) {
+    flex-wrap: wrap;
+  }
+  @media (max-width: 550px) {
+    flex-wrap: wrap;
+    margin: 0;
+    > input {
+      margin: 0;
+    }
+  }
 `;
 const RegisterDivCol = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 0.5rem;
+  margin: 0 1.5rem;
   padding: 0;
+  width: 100%;
+  min-width: 300px;
+  @media (max-width: 550px) {
+    margin: 0;
+  }
 `;
 const ValidationError = styled.p`
   display: flex;

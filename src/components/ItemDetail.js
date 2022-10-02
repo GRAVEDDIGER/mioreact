@@ -32,6 +32,14 @@ const ImageWraper = styled.div`
   align-content: center;
   align-items: center;
   width: auto;
+  @media (max-width: 410px) {
+    width: 100%;
+    margin: 0.5rem 0;
+  }
+  @media (max-width: 1200px) {
+    align-items: flex-start;
+    margin: 2rem 1;
+  }
 `;
 const StyledImage = styled.img`
   padding: 2rem;
@@ -40,8 +48,9 @@ const StyledImage = styled.img`
   max-width: 350px;
   box-shadow: 2px 2px 15px #333;
   background-color: #fff;
-  @media (max-width: 450px) {
-    height: 380px;
+  @media (max-width: 410px) {
+    width: 100%;
+    margin: 0;
   }
 `;
 const DetailsWraper = styled.div`
@@ -49,7 +58,7 @@ const DetailsWraper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  text-align: left;
+  text-align: right;
   margin: 5rem;
   flex-wrap: nowrap;
   height: auto;
@@ -82,6 +91,11 @@ const DetailsWraper = styled.div`
   @media (max-width: 500px) {
     > button {
       width: 250px;
+    }
+  }
+  @media (max-width: 410px) {
+    > h6 {
+      font-size: 1.2rem;
     }
   }
 `;
@@ -124,7 +138,7 @@ function ItemDetail({ datos }) {
         {datos ? (
           <Itemcounter
             datos={datos}
-            style={{ marginTop: "2rem" }}
+            style={{ marginTop: "2rem", justifyContent: "right" }}
             setQuantity={setQuantity}
             quantity={quantity}
           />

@@ -10,11 +10,12 @@ const CartWrap = styled.div`
   flex-direction: row;
   justify-content: flex-end;
   padding-left: 1em;
-  margin-left: 1em;
+  margin-left: 0.5em;
   cursor: pointer;
   button {
+    margin: 0;
+    padding: 0;
     cursor: pointer;
-    margin-right: 1em;
     background-color: transparent;
     color: #ffffff;
     font: 18px;
@@ -28,11 +29,18 @@ const CartWrap = styled.div`
   }
   > svg {
     color: #ffffff;
-
+    padding-left: 0.5rem;
     width: 24px;
     height: 24px;
     &:hover {
       color: #ffffff80;
+    }
+  }
+  @media (max-width: 410px) {
+    button {
+      font-size: 12px;
+      display: flex;
+      flex-wrap: wrap;
     }
   }
 `;

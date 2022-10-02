@@ -36,7 +36,14 @@ const StyledWrapper = styled.div`
   align-items: center;
   margin: 1rem;
   padding: 1rem;
+  @media (max-width: 400px) {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
 `;
+
+//ESTADOS INICIALES
 const initialForm = { mail: "", pass: "" };
 const registerFormObject = {
   name: "",
@@ -74,7 +81,7 @@ function Login() {
     ,
     setRegister,
   ] = useForm(registerFormObject);
-
+  const handleNewRegister = () => setRegisterFlag(true);
   return (
     <>
       <StyledImageContainer image={image}>
@@ -94,6 +101,7 @@ function Login() {
           setRegister={setRegisterFlag}
           setRegisterForm={setRegister}
           registerFormData={registerData}
+          handleNewRegister={handleNewRegister}
         />
         {registerFlag ? (
           <RegisterForm

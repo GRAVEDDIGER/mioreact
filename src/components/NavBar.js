@@ -3,7 +3,7 @@ import { useRef } from "react";
 import styled from "styled-components";
 import { useResize } from "../hooks/useresize";
 import CartWidget from "./CartWidget";
-import {Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
 
 ///////////////////////////////
 //  STYLED COMPONENTS STYLES //
@@ -22,10 +22,15 @@ const DivImage = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  >a> img {
+  > a > img {
     justify-content: flex-start;
     align-items: center;
     height: 75px;
+  }
+  @media (max-width: 410px) {
+    > a > img {
+      height: 50px;
+    }
   }
 `;
 ////////////
@@ -192,20 +197,21 @@ export const MenuItem = ({
   children,
   foreColor,
   colorBackground,
-  handleClick,pathName
+  handleClick,
+  pathName,
 }) => {
   return (
     <>
-    <Link to={pathName}>
-      <StyledLi foreColor={foreColor} colorBackground={colorBackground}>
-        <StyledItemButton
-          foreColor={foreColor}
-          colorBackground={colorBackground}
-          onClick={handleClick}
-        >
-          {children}
-        </StyledItemButton>
-      </StyledLi>
+      <Link to={pathName}>
+        <StyledLi foreColor={foreColor} colorBackground={colorBackground}>
+          <StyledItemButton
+            foreColor={foreColor}
+            colorBackground={colorBackground}
+            onClick={handleClick}
+          >
+            {children}
+          </StyledItemButton>
+        </StyledLi>
       </Link>
     </>
   );
@@ -240,10 +246,9 @@ export default function NavBar({
       headerHeight={headerHeight}
     >
       <DivLogo>
-      
         <DivImage>
           <Link to="/">
-          <img src={logoImage} alt={imageText} />
+            <img src={logoImage} alt={imageText} />
           </Link>
         </DivImage>
         <TitleH1> {titleHeader} </TitleH1>
@@ -253,7 +258,7 @@ export default function NavBar({
           <HamburguerStyled ref={hamburguerIcon} isActive={false} />
         </HamburguerButton>
         <MenuWraper>
-          <CartWidget  />
+          <CartWidget />
           <MenuStyled
             ref={menuReference}
             colorBackground={colorBackground}

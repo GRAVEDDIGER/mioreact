@@ -29,6 +29,29 @@ const LoginForm = styled.form`
     text-align: center;
     text-shadow: 1px 0px 2rem ${(props) => props.color.secondary};
   }
+  @media (max-width: 720px) {
+    width: 90%;
+    padding: 0.5rem 1.5rem;
+    > div > a {
+      text-align: center;
+    }
+  }
+  @media (max-width: 450px) {
+    width: 100%;
+    margin: 0 1rem;
+    padding: 0.5rem 1.5rem;
+    > div > a {
+      text-align: center;
+    }
+  }
+  @media (max-width: 400px) {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    > div > a {
+      text-align: center;
+    }
+  }
 `;
 const LoginInputBox = styled.input`
   border-radius: 10px;
@@ -75,6 +98,7 @@ function LoginFormComponent({
   setRegister,
   setRegisterForm,
   registerFormData,
+  handleNewRegister,
 }) {
   const navigate = useNavigate();
 
@@ -165,11 +189,13 @@ function LoginFormComponent({
       </Button>
       <ForgetRegisterDiv>
         <LoginAnchor foreColor={colors}>Olvide mi contraseña</LoginAnchor>
-        <LoginAnchor foreColor={colors}>Registrar nuevo Usuario</LoginAnchor>
+        <LoginAnchor foreColor={colors} onClick={handleNewRegister}>
+          Registrar nuevo Usuario
+        </LoginAnchor>
       </ForgetRegisterDiv>
       <Button
         variant="outlined"
-        style={{ marginTop: "1rem" }}
+        style={{ marginTop: "1rem", marginBottom: "1rem" }}
         onClick={googleLogin}
       >
         Google Login

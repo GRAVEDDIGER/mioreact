@@ -9,9 +9,9 @@ const ItemCounterDiv = styled.div`
   text-align: center;
   justify-content: center;
   align-items: center;
-  align-self: center;
+  align-self: right;
   align-content: center;
-  margin: 2rem;
+  margin: 2rem 0;
 
   > div > h6 {
     margin: 1rem;
@@ -29,20 +29,21 @@ const CounterButton = styled.button`
   font-size: 1.5rem;
   box-shadow: 3px 3px 15px gray;
 `;
-export const Itemcounter = ({ quantity,setQuantity, datos}) => {
+export const Itemcounter = ({ quantity, setQuantity, datos }) => {
   const [counter, setCounter] = useState(0);
-  const [stockItem, setStockItem] = useState(parseInt(datos.rating.count||0))
+  const [stockItem, setStockItem] = useState(parseInt(datos.rating.count || 0));
   const handleMinusButtonClick = () => {
-    if (counter - 1 > -1) {setCounter(counter - 1);
+    if (counter - 1 > -1) {
+      setCounter(counter - 1);
     }
-
   };
   const handlePlusButtonClick = () => {
-    if (counter < parseInt(stockItem)) {setCounter(counter + 1);
-      setStockItem(stockItem-1) 
-    };
-  }
-  setQuantity(counter)
+    if (counter < parseInt(stockItem)) {
+      setCounter(counter + 1);
+      setStockItem(stockItem - 1);
+    }
+  };
+  setQuantity(counter);
 
   return (
     <ItemCounterDiv>
