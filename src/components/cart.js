@@ -22,6 +22,7 @@ const StyledImageContainer = styled.div`
   background-repeat: no-repeat;
   background-image: url(${(props) => props.image});
   height: 300px;
+  min-height: 300px;
   overflow: hidden;
   width: 100%;
   > h3 {
@@ -33,6 +34,18 @@ const StyledImageContainer = styled.div`
     font-size: 2.5rem;
     font-weight: bold;
     text-align: left;
+  }
+  @media (max-width: 900px) {
+    background-position: 0px -200px;
+  }
+  @media (max-width: 800px) {
+    background-position: 0px -150px;
+  }
+  @media (max-width: 700px) {
+    background-position: 0px -100px;
+  }
+  @media (max-width: 600px) {
+    background-position: 0px 0px;
   }
 `;
 const StyledWrapper = styled.div`
@@ -80,6 +93,12 @@ const BubbleWrapper = styled.div`
   margin: 1rem 0.5rem;
   width: 80%;
   justify-content: space-between;
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+  @media (max-width: 550px) {
+    flex-direction: column;
+  }
 `;
 const StyledTable = styled.table`
   display: flex;
@@ -89,6 +108,15 @@ const StyledTable = styled.table`
 
   padding: 2rem;
   box-shadow: 3px 3px 15px #333;
+
+  @media (max-width: 700px) {
+    width: 100%;
+  }
+  @media (max-width: 550px) {
+    padding: 0;
+    margin: 0.3rem 0.2rem;
+    box-shadow: none;
+  }
 `;
 const ItemsTitle = styled.h2`
   font-size: 2rem;
