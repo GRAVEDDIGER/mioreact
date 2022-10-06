@@ -1,30 +1,11 @@
-import React, { useContext, useEffect, useState, useCallback } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import bannerImage from "../images/baner.png";
-// import { httpRequest } from "../funciones/consultaaapi";
 import { ItemList } from "./itemlist";
 import { useParams } from "react-router-dom";
 import { ColorsContext } from "./ColorsContext";
-import { initializeApp } from "firebase/app";
-import {
-  getFirestore,
-  getDocs,
-  collection,
-  query,
-  where,
-} from "firebase/firestore";
-import { DataContext } from "./dataContext";
-const firebaseConfig = {
-  apiKey: "AIzaSyA_TpKjxfrKGsNESMwsyB-ymtS0BtMvqpc",
-  authDomain: "miodata-d53a3.firebaseapp.com",
-  projectId: "miodata-d53a3",
-  storageBucket: "miodata-d53a3.appspot.com",
-  messagingSenderId: "668742994113",
-  appId: "1:668742994113:web:d08190b9c591db7a8cec40",
-  measurementId: "G-D5G6PT3D6E",
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+import { getDocs } from "firebase/firestore";
+import { categoryQueryProducts } from "../funciones/firebaseHLP";
 
 const ItemListWraper = styled.div`
   background-color: ${(props) => props.color};
@@ -81,46 +62,21 @@ const StyledImage = styled.div`
   }
 `;
 
-export const ItemListContainer = ({
-  greeting,
-  slogan,
-  shadow,
-  datosSetter,
-}) => {
-  const [, setDataContext] = useContext(DataContext);
+export const ItemListContainer = ({ greeting, slogan, shadow }) => {
   const [colors] = useContext(ColorsContext);
   const [dataBase, setdataBase] = useState([]);
   const { category } = useParams();
 
-  const loadItems = useCallback(
-    async (category) => {
-      let dataContextArray = [];
-      let firebaseId;
-      let q;
-      if (category) {
-        q = query(
-          collection(db, "products"),
-          where("category", "==", category)
-        );
-      } else {
-        q = query(collection(db, "products"), where("category", "!=", null));
-      }
-      const firebaseData = await getDocs(q);
-      firebaseData.forEach((firebaseDoc) => {
-        firebaseId = firebaseDoc.id;
-        let documentData = firebaseDoc.data();
-        documentData.id = firebaseId;
-        dataContextArray = [...dataContextArray, documentData];
-      });
-      let filtredData = Object.values(dataContextArray);
-      setdataBase(filtredData);
-      setDataContext(filtredData);
-    },
-    [setdataBase, setDataContext]
-  );
   useEffect(() => {
-    loadItems(category);
-  }, [loadItems, category]);
+    getDocs(categoryQueryProducts(category)).then((snapShot) => {
+      let documents = [];
+      snapShot.forEach((doc) => {
+        const finalItem = { ...doc.data(), id: doc.id };
+        documents.push(finalItem);
+        setdataBase(documents);
+      });
+    });
+  }, [category]);
   return (
     <ItemListWraper color={colors.lightBackground}>
       <StyledImage

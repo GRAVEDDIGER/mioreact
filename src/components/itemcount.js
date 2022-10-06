@@ -29,7 +29,7 @@ const CounterButton = styled.button`
   font-size: 1.5rem;
   box-shadow: 3px 3px 15px gray;
 `;
-export const Itemcounter = ({ quantity, setQuantity, datos }) => {
+export const Itemcounter = ({ setQuantity, datos }) => {
   const [counter, setCounter] = useState(0);
   const [stockItem, setStockItem] = useState(parseInt(datos.rating.count || 0));
   const handleMinusButtonClick = () => {

@@ -4,7 +4,8 @@ import styled from "styled-components";
 import ItemDetail from "./ItemDetail";
 import { Loader } from "./loader";
 import { ColorsContext } from "./ColorsContext";
-import { DataContext } from "./dataContext";
+import { onSnapshot, doc } from "firebase/firestore";
+import { db } from "../funciones/firebaseHLP";
 const ItemDetailWraper = styled.div`
   background-color: ${(props) => props.color};
   margin: 10rem;
@@ -90,17 +91,13 @@ const ItemDescription = styled.div`
 `;
 function ItemDetailContainer({ imagen, greeting, shadow }) {
   let { id } = useParams();
-  const [dataContext] = useContext(DataContext);
   const [colors] = useContext(ColorsContext);
   const [data, setData] = useState(null);
+
+  //genera un onSnapshot con firebase para que si alguien cambia el stock del item al momento que el user esta viendo la vista se actualice
   useEffect(() => {
-    const temp = dataContext.filter((item) => {
-      console.log(item, "items");
-      if (item.id.trim() === id.trim()) return item;
-    });
-    console.log("id", id, temp);
-    setData(temp[0]);
-  }, [id, data, dataContext]);
+    onSnapshot(doc(db, "products", id), (doc) => setData(doc.data()));
+  }, [id]);
 
   return (
     <ItemDetailWraper color={colors.lightBackground}>

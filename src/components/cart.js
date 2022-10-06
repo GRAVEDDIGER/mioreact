@@ -9,10 +9,10 @@ import { ColorsContext } from "./ColorsContext";
 import { pesosArgentinos } from "../funciones/pesosargentinos";
 import { AuthContext } from "./AuthContext";
 import { useNavigate } from "react-router-dom";
-import { addDocument, updateStock } from "../funciones/firebase";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getProductDocument } from "../funciones/firebase";
+import uuid from "react-uuid";
+import { dataUpdate } from "../funciones/firebaseHLP";
 
 const StyledImageContainer = styled.div`
   display: flex;
@@ -147,12 +147,33 @@ function Cart({ image }) {
     return parseInt(totalFee / quotas);
   };
 
-  const orderFinalized = (text) => toast(text);
-  const handleClick = async (e) => {
-    console.log(auth);
-    if (auth.mail === "") navigate("/login");
-    else {
-      const response = await addDocument({
+  const orderFinalized = (text) => {
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const isNotLogued = (text) => {
+    toast.warning(text, {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  //handler que genera la orden y la guarda en orders y en  una key de la collection users en el usuario logueado que tiene un array
+  //con todas las ordenes de ese user luego si el usuario esta autenticado vuelve a home si no esta logueado lo envia al login y luego lo trae al cart
+  const dataBaseUpdate = () => {
+    if (auth.mail !== "") {
+      const newOrder = {
         items: { ...cartData },
         total: priceState,
         date: new Date(),
@@ -162,31 +183,43 @@ function Cart({ image }) {
           quotaValue: intrests(priceState, quota),
           finalPrice: intrests(priceState, quota) * quota,
         },
-      });
-      cartData.forEach(async (item) => {
-        const datoUpdateOrigin = await (
-          await getProductDocument(item.id)
-        ).data();
-        console.log(datoUpdateOrigin);
-        const datoUpdate =
-          parseInt(datoUpdateOrigin.rating.count) - parseInt(item.quantity);
-        console.log(datoUpdate);
-        const actual = datoUpdateOrigin.rating;
-        updateStock(item.id, {
-          rating: { ...actual, count: datoUpdate },
-        });
-      });
-      orderFinalized(`Compra realizada su numero de orden es : ${response.id}`);
+      };
+      const orderId = uuid();
+      let products = [];
+      cartData.forEach((product) =>
+        products.push({ id: product.id, quantity: product.quantity })
+      );
+      dataUpdate(orderId, newOrder, auth, products);
+      orderFinalized(`Compra realizada su numero de orden es : ${orderId}`);
       clearCart();
-      navigate("/");
+      setTimeout(() => {
+        navigate("/");
+      }, 5000);
+    } else {
+      isNotLogued("Debes ingresar al sitio para comprar redirigiendo...");
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
     }
   };
+
   return (
     <>
       <StyledImageContainer image={image}>
         <h3>CARRITO DE COMPRAS</h3>
       </StyledImageContainer>
       <StyledWrapper>
+        <ToastContainer
+          position="top-right"
+          autoClose={4500}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <ToastContainer />
         {cartData.length ? <ItemsTitle>Lista de Compras</ItemsTitle> : null}
         {cartData.length ? (
@@ -295,7 +328,7 @@ function Cart({ image }) {
           </BubbleWrapper>
         ) : null}
         {cartData.length ? (
-          <Button variant="contained" onClick={handleClick}>
+          <Button variant="contained" onClick={dataBaseUpdate}>
             Finalizar Compra
           </Button>
         ) : (

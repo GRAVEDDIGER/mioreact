@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { CartContext } from "./CartContext";
 import { ColorsContext } from "./ColorsContext";
+import { toast, ToastContainer } from "react-toastify";
 
 const ItemDetailWraper = styled.div`
   width: 100%;
@@ -103,22 +104,47 @@ const DetailsWraper = styled.div`
 function ItemDetail({ datos }) {
   const [cartData, addItem] = useContext(CartContext);
   const actualPage = useParams();
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(0);
   const [colors] = useContext(ColorsContext);
   let condicion = false;
-  const onAdd = () => {
-    addItem(datos.id, datos.price, datos.title, quantity);
+  const addedToCart = (text) => {
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
+  // funcion que agrega el item al carrito
+  const onAdd = () => {
+    addedToCart("Agregado al carrito");
+    addItem(id, datos.price, datos.title, quantity);
+  };
+  //aca se verifica si el item en la vista esta en el carrito para evaluar el render condicional del boton
   if (cartData.length > 0) {
     cartData.forEach((item) => {
-      if (item.id === datos.id) {
+      if (item.id === id) {
         condicion = true;
       }
     });
   }
-
   return (
     <ItemDetailWraper color={colors.lightBackground}>
+      <ToastContainer
+        position="top-right"
+        autoClose={4500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <ImageWraper>
         <StyledImage src={datos.image} />
       </ImageWraper>

@@ -1,4 +1,5 @@
 # MIO-SUBLIMACION HOME PAGE
+
 This Single Page Aplicattion was builded for my react course in CoderHouse. During the course ive been using Fake Store Api as a backend for my react website.
 But in the following deployments of this site im going to build its own backend to suport the site.
 
@@ -10,13 +11,43 @@ But in the following deployments of this site im going to build its own backend 
 - React router dom
 - Styled Components
 - React UUID
+- Frebase
+- React-Tostify
 
 ## Why Styled Components?
 
-The reason is that it mades easier to format the css because the code is fragmented into the components. And at the same time helps to avoid the class overlaping 
+The reason is that it mades easier to format the css because the code is fragmented into the components. And at the same time helps to avoid the class overlaping.
+This library makes the job of making the site responsive very enjoyable.
+
+## React Tostify
+
+Ive used this library to send notification to the user during the purchase procedure.
+
+## Fomr Validation
+
+I didnt used a library to manage forms, the validation process is guaranted by a customHook that implements a Object whith the Regular expresions and the text responses to evety validation.
+The structure of the Object is :
+{key:regExp:{/regular expresion/,
+response:"Text response"}}
+
+## Firebase Backend Service
+
+Ive used the Firestore Databse in the Backend of the site.
+The database counts with 3 itemCollections that allocate the data provided for and by the user.
+
+1. products : contains the data of the items to be purchased (ive used the data in the Fake Store API web)
+2. users : contains the information of every user loged on the site
+3. orders : contains the register of every purchase and includes User data, items purchased with basic information and calculated data like the total price and payment methods.
+
+## Firebase Authentication
+
+Ive used the firebase google auth service to ensure the user a easy access to the site, in case of register it takes the data provided by google and auto completes part of the registration form.
 
 ## Demostration
+
 ![](Mio-Sublimacion.gif)
+
+## The site was builded using the Create New App CLI
 
 ## Available Scripts
 
@@ -54,4 +85,3 @@ If you aren't satisfied with the build tool and configuration choices, you can `
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-

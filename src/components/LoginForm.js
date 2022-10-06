@@ -3,8 +3,9 @@ import styled from "styled-components";
 import Button from "@mui/material/Button";
 import { GoogleAuthProvider, getAuth, signInWithPopup } from "firebase/auth";
 import { getDocs, collection, query, where } from "firebase/firestore";
-import { db } from "../funciones/firebase";
+import { db } from "../funciones/firebaseHLP";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 const provider = new GoogleAuthProvider();
 const auth = getAuth();
 auth.languageCode = "es";
@@ -100,27 +101,61 @@ function LoginFormComponent({
   registerFormData,
   handleNewRegister,
 }) {
+  const successLogin = (text) => {
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
   const navigate = useNavigate();
-
+  const errorsOnSubmit = (texto) => {
+    toast.warning(texto, {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  //funcion asincrona que utiliza primero valida usando la funcion onSubmitHandle que se toma desde el hook useFomr
+  //luego realiza un query en firebase buscando el mail introducido. Si lo encuentra compara la contraseña si no lo encuentra emite un
+  //error en el dialogo y dispara un tostify con un warning si la clave no coincide lo mismo
+  // si coincide guarda en el contexto Auth los datos del usuario y el id del documento de fierbase , notifica el loguin con un tostify y navega a la pagina desde donde llego
+  //el cambio del contexto auth genera un condicional render que  modifica el texto ingreso/registro por una bienvenida al user
   const signInHandle = async (e) => {
     onSubmitForm(e);
-    const q = query(
-      collection(db, "users"),
-      where("mail", "==", formData.mail)
-    );
-    const userData = await getDocs(q);
-    if (userData.docs.length === 0)
-      setError({ mail: "El mail no esta registrado" });
-    else {
-      const userRegister = userData.docs[0].data();
-      if (userRegister.pass !== formData.pass)
-        setError({ pass: "Clave incorrecta" });
-      else {
-        setAuth(userRegister);
-        navigate(-1);
+    if (!loginError.length) {
+      const q = query(
+        collection(db, "users"),
+        where("mail", "==", formData.mail)
+      );
+      const userData = await getDocs(q);
+
+      if (userData.docs.length === 0) {
+        errorsOnSubmit("El mail no esta registrado");
+        setError({ mail: "El mail no esta registrado" });
+      } else {
+        const userRegister = userData.docs[0].data();
+        if (userRegister.pass !== formData.pass) {
+          errorsOnSubmit("La clave es incorrecta");
+          setError({ pass: "Clave incorrecta" });
+        } else {
+          setAuth({ ...userRegister, id: userData.docs[0].id });
+          successLogin("Ingreso Correcto");
+          setTimeout(() => navigate(-1), 2500);
+        }
       }
-    }
+    } else errorsOnSubmit("Los datos no son correctos");
   };
+
+  //mismo que la funcion anterior pero usa el OAuth de firebase para el login
   const googleLogin = async () => {
     signInWithPopup(auth, provider).then((result) => {
       setGoogleLogin(result["_tokenResponse"]);
@@ -132,7 +167,7 @@ function LoginFormComponent({
         if (response.docs.length === 0) {
           setRegister(result["_tokenResponse"]);
           const { email, firstName, lastName } = result["_tokenResponse"];
-
+          errorsOnSubmit("Usuario no registrado, complete los datos");
           setRegisterForm({
             ...registerFormData,
             name: firstName,
@@ -141,14 +176,29 @@ function LoginFormComponent({
           });
           setAuth({});
         } else {
-          setAuth(response.docs[0].data());
-          navigate("/");
+          setAuth({ ...response.docs[0].data(), id: response.docs[0].id });
+
+          navigate(-1);
         }
       });
     });
   };
+  //Si se hace click en el boton nuevo registro llama a la funcion  handleNewRegister que pasa por prop desde login component y eso genera un flag que activa el condicional
+  // render del form de registro
+  //en el caso de que el google auth no encuentre el mail automaticamente abrira el form de registro completando los datos provistos por google
   return (
     <LoginForm color={colors} onSubmit={signInHandle}>
+      <ToastContainer
+        position="top-right"
+        autoClose={4500}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <h2>Ingrese su Usuario y Contraseña</h2>
       <LoginInputBox
         type="text"

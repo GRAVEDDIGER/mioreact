@@ -59,7 +59,11 @@ const registerFormObject = {
 function Login() {
   const [colors] = useContext(ColorsContext);
   const [, setAuthData] = useContext(AuthContext);
+  //esta flag marca si hay que mostrar o no al formulario de registro
   const [registerFlag, setRegisterFlag] = useState(false);
+  //se toman las funciones establecidas en el hook useForm para los 2 formularios que hay en esta vista
+  //login form
+  //registerForm
   const [
     loginData,
     loginError,
@@ -82,6 +86,7 @@ function Login() {
     setRegister,
   ] = useForm(registerFormObject);
   const handleNewRegister = () => setRegisterFlag(true);
+  //debo revisar como refactorizar las props que paso a loginFOrmComponent porque son demasiadas despues evaluare generar otro hook
   return (
     <>
       <StyledImageContainer image={image}>

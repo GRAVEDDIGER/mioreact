@@ -1,10 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
-import { getFirestore, getDocs, collection, addDoc } from "firebase/firestore";
-import { db } from "../funciones/firebase";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../funciones/firebaseHLP";
 import { useNavigate } from "react-router-dom";
-
+import { ToastContainer, toast } from "react-toastify";
+import { getUserData } from "../funciones/firebaseHLP";
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -97,6 +98,8 @@ const ValidationError = styled.p`
   padding: 1px 0;
   margin: 3px 0;
 `;
+//COMPONENTE INPUT QUE TIENE ASOCIADO UN <P> </p> PARA PODER GENEREAR NOTIFICACION DE ERRORES , TOMA LOS DATOS QUE PASASN DESDE EL LOGIN COMPONENT
+//SON CAMPOS CONTROLADOS POR UN STATE Y UN ONCHANGE HANDLER. USAN ONBLUR PARA VERIFICAR LA VALIDACION
 function InputRegister({
   colors,
   placeholder,
@@ -126,6 +129,8 @@ function InputRegister({
     </RegisterDivCol>
   );
 }
+
+//FORMULARIO DE REGISTRO
 function RegisterForm({
   colors,
   onChangeHandle,
@@ -135,21 +140,61 @@ function RegisterForm({
   onSubmitForm,
   setAuth,
 }) {
-  const navigate = useNavigate();
-  const handleRegister = (e) => {
-    onSubmitForm(e);
-    if (error) {
-      addDoc(collection(db, "users"), formData);
-      setAuth(formData);
-      navigate("/");
-    }
+  const successRegister = (text) => {
+    toast.success(text, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
   };
-  // crear funcion para el boton de registro que llame a onSubmit form y que luego si valida pase a guardar los
-  //datos en Firebase
+  const errorRegister = (text) => {
+    toast.error(text, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+  };
+  const navigate = useNavigate();
+  //handleRegiser usa de nuevo la funcion onSubmit form provista por useForm para realziar las validaciones. si el objeto error no tiene contenido entonces guarda el registro y si
+  //y notifica con un tostify , si hay errores marca los errores en la ui y genera un tostify de error
+  const handleRegister = async (e) => {
+    onSubmitForm(e);
+    console.log(typeof error, error.lenght);
+    if (!error.lenght) {
+      getUserData(formData.mail).then((response) => {
+        console.log(response.usersLength);
+        if (parseInt(response.usersLength) === 0) {
+          addDoc(collection(db, "users"), formData);
+          setAuth(formData);
+          successRegister("El usuario se ha registrado con exito");
+          setTimeout(() => navigate("/"), 2500);
+        } else errorRegister("El correo ya existe");
+      });
+    } else errorRegister("No se pudo registrar");
+  };
   return (
     <>
       <br />
       <LoginForm color={colors} onSubmit={handleRegister}>
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
         <h2>Registro</h2>
         <RegisterDivCol>
           <RegisterDiv>

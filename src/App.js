@@ -10,7 +10,6 @@ import Cart from "./components/cart";
 import CartProvider from "./components/CartContext";
 import CartImage from "./images/cart.jpg";
 import ColorsContextProvider from "./components/ColorsContext";
-import DataContextProvider from "./components/dataContext";
 import Login from "./components/Login";
 import AuthContextProvider from "./components/AuthContext";
 const colors = {
@@ -26,78 +25,76 @@ function App() {
   const woman = encodeURIComponent("women's clothing");
   return (
     <AuthContextProvider>
-      <DataContextProvider>
-        <ColorsContextProvider>
-          <CartProvider>
-            <div className="App">
-              <BrowserRouter>
-                <NavBar
-                  titleHeader="Mio Sublimacion"
-                  logoImage={logo}
-                  colorBackground={colors.background}
-                  gradient1={colors.primary}
-                  gradient2={colors.secondary}
-                  foreColor={colors.accent}
-                  headerHeight="120px"
-                >
-                  <MenuItem pathName="/">Home</MenuItem>
-                  <MenuItem pathName="/category/electronics">
-                    Electronics
-                  </MenuItem>
-                  <MenuItem pathName="/category/jewelery">Jewelery</MenuItem>
-                  <MenuItem pathName={`/category/${men}`}>
-                    Men's clothing
-                  </MenuItem>
-                  <MenuItem pathName={`/category/${woman}`}>
-                    Women's clothing
-                  </MenuItem>
-                </NavBar>
-                <Routes>
-                  <Route
-                    path="/"
-                    element={
-                      <ItemListContainer
-                        greeting="Bienvenidos a MIO Sublimacion"
-                        shadow={colors.primary}
-                        slogan="Diseños personalizados segun tus necesidades"
-                        color={colors.lightBackground}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/category/:category"
-                    element={
-                      <ItemListContainer
-                        greeting="Bienvenidos a MIO Sublimacion"
-                        shadow={colors.primary}
-                        slogan="Diseños personalizados segun tus necesidades"
-                        color={colors.lightBackground}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/item/:id"
-                    element={
-                      <ItemDetailContainer
-                        imagen={imagenDetalle}
-                        shadow={colors.primary}
-                        greeting="Detalles del producto"
-                      />
-                    }
-                  />
-                  <Route
-                    path="/cart"
-                    element={
-                      <Cart image={CartImage} priceColor={colors.accent} />
-                    }
-                  />
-                  <Route path="/login" element={<Login />} />
-                </Routes>
-              </BrowserRouter>
-            </div>
-          </CartProvider>
-        </ColorsContextProvider>
-      </DataContextProvider>
+      <ColorsContextProvider>
+        <CartProvider>
+          <div className="App">
+            <BrowserRouter>
+              <NavBar
+                titleHeader="Mio Sublimacion"
+                logoImage={logo}
+                colorBackground={colors.background}
+                gradient1={colors.primary}
+                gradient2={colors.secondary}
+                foreColor={colors.accent}
+                headerHeight="120px"
+              >
+                <MenuItem pathName="/">Home</MenuItem>
+                <MenuItem pathName="/category/electronics">
+                  Electronics
+                </MenuItem>
+                <MenuItem pathName="/category/jewelery">Jewelery</MenuItem>
+                <MenuItem pathName={`/category/${men}`}>
+                  Men's clothing
+                </MenuItem>
+                <MenuItem pathName={`/category/${woman}`}>
+                  Women's clothing
+                </MenuItem>
+              </NavBar>
+              <Routes>
+                <Route
+                  path="/"
+                  element={
+                    <ItemListContainer
+                      greeting="Bienvenidos a MIO Sublimacion"
+                      shadow={colors.primary}
+                      slogan="Diseños personalizados segun tus necesidades"
+                      color={colors.lightBackground}
+                    />
+                  }
+                />
+                <Route
+                  path="/category/:category"
+                  element={
+                    <ItemListContainer
+                      greeting="Bienvenidos a MIO Sublimacion"
+                      shadow={colors.primary}
+                      slogan="Diseños personalizados segun tus necesidades"
+                      color={colors.lightBackground}
+                    />
+                  }
+                />
+                <Route
+                  path="/item/:id"
+                  element={
+                    <ItemDetailContainer
+                      imagen={imagenDetalle}
+                      shadow={colors.primary}
+                      greeting="Detalles del producto"
+                    />
+                  }
+                />
+                <Route
+                  path="/cart"
+                  element={
+                    <Cart image={CartImage} priceColor={colors.accent} />
+                  }
+                />
+                <Route path="/login" element={<Login />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
+        </CartProvider>
+      </ColorsContextProvider>
     </AuthContextProvider>
   );
 }

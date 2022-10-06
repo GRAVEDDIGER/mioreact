@@ -41,6 +41,7 @@ const CartWrap = styled.div`
       font-size: 12px;
       display: flex;
       flex-wrap: wrap;
+      margin-right: 0;
     }
   }
 `;
@@ -48,16 +49,21 @@ const CartWrap = styled.div`
 const CartWidget = () => {
   const [cartData] = useContext(CartContext);
   const [auth] = useContext(AuthContext);
+  //evalua los contextos de cart y de auth para generar el widget con los render condicionales
   return (
     <CartWrap>
       <Link to="/login" style={{ textDecoration: "none", color: "#fff" }}>
         <button>
-          {auth.name ? `Bienvenido ${auth.name}` : "Ingresar/Registrarse"}
+          {auth.name ? `Bienvenidx ${auth.name}` : "Ingresar/Registrarse"}
         </button>
       </Link>
       {cartData.length ? (
         <Link to="/cart" style={{ textDecoration: "none", color: "#fff" }}>
-          <Badge badgeContent={cartData.length} color="secondary">
+          <Badge
+            style={{ marginLeft: "1rem" }}
+            badgeContent={cartData.length}
+            color="secondary"
+          >
             <BsCart4 />
           </Badge>
         </Link>
