@@ -55,6 +55,7 @@ const registerFormObject = {
   department: "",
   zipCode: "",
   mail: "",
+  pass: "",
 };
 function Login() {
   const [colors] = useContext(ColorsContext);

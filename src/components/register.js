@@ -289,6 +289,18 @@ function RegisterForm({
               style={{ width: "100%" }}
             />
           </RegisterDiv>
+          <RegisterDiv>
+            <InputRegister
+              colors={colors}
+              placeholder="Password"
+              name="pass"
+              onBlur={onBlurHandle}
+              value={formData}
+              error={error.pass}
+              onChangeHandle={onChangeHandle}
+              style={{ width: "100%" }}
+            />
+          </RegisterDiv>
         </RegisterDivCol>
         <br />
         <Button variant="contained" onClick={handleRegister}>
