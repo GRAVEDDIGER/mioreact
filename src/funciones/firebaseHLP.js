@@ -42,14 +42,21 @@ export const dataUpdate = (id, orderData, userData, productsId) => {
     batch.update(prodRef, "rating.count", increment(decrement));
   });
   getDoc(userRef).then((user) => {
-    console.log(user);
     const userData = [];
     userData.push(user.data());
-    if (!userData.hasOwnProperty("orders")) userData[0]["orders"] = [];
-    console.log(userData);
 
-    let ordersArray = [...userData[0].orders, orderData];
-    userData[0].orders.forEach((order) => ordersArray.push(order));
+    if (!userData[0].hasOwnProperty("orders")) userData[0]["orders"] = [];
+    let newArray = {
+      date: orderData.date,
+      items: orderData.items,
+      paymentMethod: orderData.paymentMethod,
+      total: orderData.total,
+    };
+
+    let ordersArray = userData[0].orders;
+
+    ordersArray.push(newArray);
+    // userData[0].orders.forEach((order) => ordersArray.push(order));
     batch.update(userRef, "orders", ordersArray);
     batch.set(docRef, orderData);
     batch.commit();

@@ -1,5 +1,5 @@
 import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const ItemCounterDiv = styled.div`
@@ -43,7 +43,9 @@ export const Itemcounter = ({ setQuantity, datos }) => {
       setStockItem(stockItem - 1);
     }
   };
-  setQuantity(counter);
+  useEffect(() => {
+    setQuantity(counter);
+  }, [counter, setQuantity]);
 
   return (
     <ItemCounterDiv>
