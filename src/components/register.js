@@ -1,11 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
-import { collection, addDoc } from "firebase/firestore";
-import { db } from "../funciones/firebaseHLP";
-import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import { getUserData } from "../funciones/firebaseHLP";
+import { ToastContainer } from "react-toastify";
+import { AuthContext } from "./AuthContext";
+import { useLogin } from "../hooks/useLogin.js";
 const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -109,11 +107,12 @@ function InputRegister({
   onChangeHandle,
   error,
   style,
+  password,
 }) {
   return (
     <RegisterDivCol style={style}>
       <LoginInputBox
-        type="text"
+        type={password ? "password" : "text"}
         backgroundColor={colors}
         placeholder={placeholder}
         onBlur={onBlur}
@@ -131,55 +130,16 @@ function InputRegister({
 }
 
 //FORMULARIO DE REGISTRO
-function RegisterForm({
-  colors,
-  onChangeHandle,
-  onBlurHandle,
-  formData,
-  error,
-  onSubmitForm,
-  setAuth,
-}) {
-  const successRegister = (text) => {
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  const errorRegister = (text) => {
-    toast.error(text, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  const navigate = useNavigate();
-  //handleRegiser usa de nuevo la funcion onSubmit form provista por useForm para realziar las validaciones. si el objeto error no tiene contenido entonces guarda el registro y si
-  //y notifica con un tostify , si hay errores marca los errores en la ui y genera un tostify de error
-  const handleRegister = async (e) => {
-    onSubmitForm(e);
-    console.log(typeof error, error.lenght);
-    if (!error.lenght) {
-      getUserData(formData.mail).then((response) => {
-        console.log(response.usersLength);
-        if (parseInt(response.usersLength) === 0) {
-          addDoc(collection(db, "users"), formData);
-          setAuth(formData);
-          successRegister("El usuario se ha registrado con exito");
-          setTimeout(() => navigate("/"), 2500);
-        } else errorRegister("El correo ya existe");
-      });
-    } else errorRegister("No se pudo registrar");
-  };
+function RegisterForm({ colors }) {
+  const {
+    registerError,
+    registerData,
+    registerHandleBlur,
+    registerHandleChange,
+  } = useContext(AuthContext);
+
+  const { handleRegister } = useLogin();
+
   return (
     <>
       <br />
@@ -201,20 +161,20 @@ function RegisterForm({
             <InputRegister
               colors={colors}
               placeholder="Nombre"
-              onBlur={onBlurHandle}
+              onBlur={registerHandleBlur}
               name="name"
-              value={formData}
-              error={error.name}
-              onChangeHandle={onChangeHandle}
+              value={registerData}
+              error={registerError.name}
+              onChangeHandle={registerHandleChange}
             />
             <InputRegister
               colors={colors}
               placeholder="Apellido"
               name="lastName"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.lastName}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.lastName}
+              onChangeHandle={registerHandleChange}
             />
           </RegisterDiv>
           <RegisterDiv>
@@ -222,19 +182,19 @@ function RegisterForm({
               colors={colors}
               placeholder="Codigo de Area"
               name="areaCode"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.areaCode}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.areaCode}
+              onChangeHandle={registerHandleChange}
             />
             <InputRegister
               colors={colors}
               placeholder="Numero de telefono"
               name="phoneNumber"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.phoneNumber}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.phoneNumber}
+              onChangeHandle={registerHandleChange}
             />
           </RegisterDiv>
           <RegisterDiv>
@@ -242,19 +202,19 @@ function RegisterForm({
               colors={colors}
               placeholder="Calle"
               name="street"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.street}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.street}
+              onChangeHandle={registerHandleChange}
             />
             <InputRegister
               colors={colors}
               placeholder="Altura"
               name="number"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.number}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.number}
+              onChangeHandle={registerHandleChange}
             />
           </RegisterDiv>
           <RegisterDiv>
@@ -262,19 +222,19 @@ function RegisterForm({
               colors={colors}
               placeholder="Localidad"
               name="department"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.department}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.department}
+              onChangeHandle={registerHandleChange}
             />
             <InputRegister
               colors={colors}
               placeholder="Codigo Postal"
               name="zipCode"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.zipCode}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.zipCode}
+              onChangeHandle={registerHandleChange}
             />
           </RegisterDiv>
           <RegisterDiv>
@@ -282,22 +242,23 @@ function RegisterForm({
               colors={colors}
               placeholder="e-Mail"
               name="mail"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.mail}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.mail}
+              onChangeHandle={registerHandleChange}
               style={{ width: "100%" }}
             />
           </RegisterDiv>
           <RegisterDiv>
             <InputRegister
               colors={colors}
+              password={true}
               placeholder="Password"
               name="pass"
-              onBlur={onBlurHandle}
-              value={formData}
-              error={error.pass}
-              onChangeHandle={onChangeHandle}
+              onBlur={registerHandleBlur}
+              value={registerData}
+              error={registerError.pass}
+              onChangeHandle={registerHandleChange}
               style={{ width: "100%" }}
             />
           </RegisterDiv>

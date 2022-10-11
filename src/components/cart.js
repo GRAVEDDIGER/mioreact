@@ -133,7 +133,7 @@ const EmptyCart = styled.h3`
 function Cart({ image }) {
   const [cartData, , , clearCart] = useContext(CartContext);
   const [colors] = useContext(ColorsContext);
-  const [auth] = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
   let priceState = 0;
   cartData.forEach((item) => {

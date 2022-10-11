@@ -48,7 +48,7 @@ const CartWrap = styled.div`
 
 const CartWidget = () => {
   const [cartData] = useContext(CartContext);
-  const [auth] = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   //evalua los contextos de cart y de auth para generar el widget con los render condicionales
   return (
     <CartWrap>

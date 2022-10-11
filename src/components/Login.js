@@ -1,10 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import image from "../images/ingreso.jpg";
 import { ColorsContext } from "./ColorsContext";
 import { AuthContext } from "./AuthContext";
 import LoginFormComponent from "./LoginForm";
-import { useForm } from "../hooks/useForm";
 import RegisterForm from "./register";
 //trabajando en validaciones en la rama de google auth incompleta
 
@@ -43,49 +42,19 @@ const StyledWrapper = styled.div`
   }
 `;
 
-//ESTADOS INICIALES
-const initialForm = { mail: "", pass: "" };
-const registerFormObject = {
-  name: "",
-  lastName: "",
-  areaCode: "",
-  phoneNumber: "",
-  street: "",
-  number: "",
-  department: "",
-  zipCode: "",
-  mail: "",
-  pass: "",
-};
 function Login() {
   const [colors] = useContext(ColorsContext);
-  const [, setAuthData] = useContext(AuthContext);
-  //esta flag marca si hay que mostrar o no al formulario de registro
-  const [registerFlag, setRegisterFlag] = useState(false);
-  //se toman las funciones establecidas en el hook useForm para los 2 formularios que hay en esta vista
-  //login form
-  //registerForm
-  const [
-    loginData,
-    loginError,
-    ,
-    loginHandleBlur,
-    loginHandleChange,
-    onSubmitForm,
-    ,
-    setError,
-  ] = useForm(initialForm);
-  const [
+  const {
+    setAuthData,
     registerData,
     registerError,
-    ,
     registerHandleBlur,
     registerHandleChange,
     onRegisterSubmit,
-    ,
-    ,
-    setRegister,
-  ] = useForm(registerFormObject);
+    registerFlag,
+    setRegisterFlag,
+  } = useContext(AuthContext);
+
   const handleNewRegister = () => setRegisterFlag(true);
   //debo revisar como refactorizar las props que paso a loginFOrmComponent porque son demasiadas despues evaluare generar otro hook
   return (
@@ -97,16 +66,6 @@ function Login() {
         <LoginFormComponent
           colors={colors}
           setGoogleLogin={setAuthData}
-          onChangeHandle={loginHandleChange}
-          onBlurHandle={loginHandleBlur}
-          formData={loginData}
-          loginError={loginError}
-          onSubmitForm={onSubmitForm}
-          setError={setError}
-          setAuth={setAuthData}
-          setRegister={setRegisterFlag}
-          setRegisterForm={setRegister}
-          registerFormData={registerData}
           handleNewRegister={handleNewRegister}
         />
         {registerFlag ? (

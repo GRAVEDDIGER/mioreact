@@ -79,9 +79,7 @@ export const getUserData = (mail) => {
       resolve({ ...userData, usersLength: longitud });
       reject("error");
     });
-    console.log("firebase", longitud, "proimesa", response);
     return response;
   });
-  console.log(output, "dadd");
   return output;
 };
