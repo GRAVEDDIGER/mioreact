@@ -130,12 +130,32 @@ const EmptyCart = styled.h3`
   font-weight: bold;
   font-family: "Roboto" sans-serif;
 `;
+const UserForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > input {
+    border-radius: 15px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+    border: none;
+
+    outline: 2px solid #333;
+  }
+`;
+const initialUserState = { name: "", lastName: "", email: "", phone: "" };
 function Cart({ image }) {
   const [cartData, , , clearCart] = useContext(CartContext);
   const [colors] = useContext(ColorsContext);
   const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [userState, setUserState] = useState(initialUserState);
   let priceState = 0;
+  const handleUserChange = (e) => {
+    setUserState({ ...userState, [e.target.name]: e.target.value });
+  };
   cartData.forEach((item) => {
     priceState += parseFloat(item.price) * 300 * parseInt(item.quantity);
   });
@@ -169,6 +189,7 @@ function Cart({ image }) {
       progress: undefined,
     });
   };
+
   //handler que genera la orden y la guarda en orders y en  una key de la collection users en el usuario logueado que tiene un array
   //con todas las ordenes de ese user luego si el usuario esta autenticado vuelve a home si no esta logueado lo envia al login y luego lo trae al cart
   const dataBaseUpdate = () => {
@@ -251,6 +272,32 @@ function Cart({ image }) {
               <strong>Precio Total: </strong>{" "}
               <Price price={priceState} color={colors.accent} />
             </Holder>
+            <UserForm>
+              <input
+                type="text"
+                placeholder="Introduzca su nombre"
+                onChange={handleUserChange}
+                name="name"
+              />
+              <input
+                type="text"
+                placeholder="Introduzca su apellido"
+                onChange={handleUserChange}
+                name="lastName"
+              />
+              <input
+                type="text"
+                onChange={handleUserChange}
+                name="email"
+                placeholder="Introduzca su e-Mail"
+              />
+              <input
+                type="text"
+                onChange={handleUserChange}
+                name="phone"
+                placeholder="Introduzca su telefono"
+              />
+            </UserForm>
             <Holder backColor={colors.primary}>
               <ul>
                 <li>
@@ -327,7 +374,12 @@ function Cart({ image }) {
             </Holder>
           </BubbleWrapper>
         ) : null}
-        {cartData.length ? (
+
+        {cartData.length &&
+        userState.name !== "" &&
+        userState.lastName !== "" &&
+        userState.email !== "" &&
+        userState.phone !== "" ? (
           <Button variant="contained" onClick={dataBaseUpdate}>
             Finalizar Compra
           </Button>
