@@ -138,14 +138,14 @@ const UserForm = styled.form`
 
   > input {
     border-radius: 15px;
-    padding: 0.5rem;
+    padding: 0.2rem;
     margin: 0.5rem;
     border: none;
-
+    width: 250px;
     outline: 2px solid #333;
   }
 `;
-const initialUserState = { name: "", lastName: "", email: "", phone: "" };
+const initialUserState = { name: "", lastName: "", mail: "", phoneNumber: "" };
 function Cart({ image }) {
   const [cartData, , , clearCart] = useContext(CartContext);
   const [colors] = useContext(ColorsContext);
@@ -198,7 +198,13 @@ function Cart({ image }) {
         items: { ...cartData },
         total: priceState,
         date: new Date(),
-        user: { ...auth },
+        user: {
+          ...auth,
+          name: userState.name,
+          mail: userState.mail,
+          phoneNumber: userState.phoneNumber,
+          lastName: userState.lastName,
+        },
         paymentMethod: {
           quotas: quota,
           quotaValue: intrests(priceState, quota),
@@ -288,13 +294,13 @@ function Cart({ image }) {
               <input
                 type="text"
                 onChange={handleUserChange}
-                name="email"
+                name="mail"
                 placeholder="Introduzca su e-Mail"
               />
               <input
                 type="text"
                 onChange={handleUserChange}
-                name="phone"
+                name="phoneNumber"
                 placeholder="Introduzca su telefono"
               />
             </UserForm>
