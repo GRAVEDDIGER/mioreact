@@ -292,13 +292,13 @@ function Cart({ image }) {
                 name="lastName"
               />
               <input
-                type="text"
+                type="email"
                 onChange={handleUserChange}
                 name="mail"
                 placeholder="Introduzca su e-Mail"
               />
               <input
-                type="text"
+                type="tel"
                 onChange={handleUserChange}
                 name="phoneNumber"
                 placeholder="Introduzca su telefono"
