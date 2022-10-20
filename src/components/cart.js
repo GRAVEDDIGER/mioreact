@@ -1,18 +1,14 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import { Button } from "@mui/material";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 import Price from "./Price";
-import { CartContext } from "./CartContext";
-import { ColorsContext } from "./ColorsContext";
-import { pesosArgentinos } from "../funciones/pesosargentinos";
-import { AuthContext } from "./AuthContext";
-import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import uuid from "react-uuid";
-import { dataUpdate } from "../funciones/firebaseHLP";
+import CartUserForm from "./CartUserForm";
+import QuotaController from "./QuotaControler";
+import useCart from "../hooks/useCart";
 
 const StyledImageContainer = styled.div`
   display: flex;
@@ -130,105 +126,53 @@ const EmptyCart = styled.h3`
   font-weight: bold;
   font-family: "Roboto" sans-serif;
 `;
-const UserForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  > input {
-    border-radius: 15px;
-    padding: 0.2rem;
-    margin: 0.5rem;
-    border: none;
-    width: 250px;
-    outline: 2px solid #333;
-  }
-`;
-const initialUserState = { name: "", lastName: "", mail: "", phoneNumber: "" };
+function CartItems({ cartData }) {
+  return (
+    <>
+      {cartData.length ? <ItemsTitle>Lista de Compras</ItemsTitle> : null}
+      {cartData.length ? (
+        <StyledTable>
+          <tbody>
+            {cartData.map((item) => {
+              return (
+                <CartItem
+                  title={item.title}
+                  price={item.price}
+                  quantity={item.quantity}
+                  id={item.id}
+                  key={item.id}
+                />
+              );
+            })}
+          </tbody>
+        </StyledTable>
+      ) : (
+        <EmptyCart style={{ alignSelf: "center", textAlign: "center" }}>
+          Carrito Vacio
+        </EmptyCart>
+      )}
+    </>
+  );
+}
+function PriceHolder({ priceState, colors }) {
+  return (
+    <Holder backColor={colors.primary} priceColor={colors.strongAccent}>
+      <strong>Precio Total: </strong>{" "}
+      <Price price={priceState} color={colors.accent} />
+    </Holder>
+  );
+}
 function Cart({ image }) {
-  const [cartData, , , clearCart] = useContext(CartContext);
-  const [colors] = useContext(ColorsContext);
-  const { auth } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [userState, setUserState] = useState(initialUserState);
-  let priceState = 0;
-  const handleUserChange = (e) => {
-    setUserState({ ...userState, [e.target.name]: e.target.value });
-  };
-  cartData.forEach((item) => {
-    priceState += parseFloat(item.price) * 300 * parseInt(item.quantity);
-  });
-  const [quota, setQuota] = useState("1");
-  const handleQuotasChange = (e) => setQuota(e.target.value);
-  const intrests = (price, quotas) => {
-    let montlyFee = (price * 60) / 100 / 12;
-    let totalFee = price + montlyFee * quotas;
-    return parseInt(totalFee / quotas);
-  };
-
-  const orderFinalized = (text) => {
-    toast.success(text, {
-      position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-  const isNotLogued = (text) => {
-    toast.warning(text, {
-      position: "top-right",
-      autoClose: 2500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
-  //handler que genera la orden y la guarda en orders y en  una key de la collection users en el usuario logueado que tiene un array
-  //con todas las ordenes de ese user luego si el usuario esta autenticado vuelve a home si no esta logueado lo envia al login y luego lo trae al cart
-  const dataBaseUpdate = () => {
-    if (auth.mail !== "") {
-      const newOrder = {
-        items: { ...cartData },
-        total: priceState,
-        date: new Date(),
-        user: {
-          ...auth,
-          name: userState.name,
-          mail: userState.mail,
-          phoneNumber: userState.phoneNumber,
-          lastName: userState.lastName,
-        },
-        paymentMethod: {
-          quotas: quota,
-          quotaValue: intrests(priceState, quota),
-          finalPrice: intrests(priceState, quota) * quota,
-        },
-      };
-      const orderId = uuid();
-      let products = [];
-      cartData.forEach((product) =>
-        products.push({ id: product.id, quantity: product.quantity })
-      );
-      dataUpdate(orderId, newOrder, auth, products);
-      orderFinalized(`Compra realizada su numero de orden es : ${orderId}`);
-      clearCart();
-      setTimeout(() => {
-        navigate("/");
-      }, 5000);
-    } else {
-      isNotLogued("Debes ingresar al sitio para comprar redirigiendo...");
-      setTimeout(() => {
-        navigate("/login");
-      }, 3000);
-    }
-  };
+  const {
+    cartData,
+    colors,
+    userState,
+    setUserState,
+    setQuota,
+    handleQuotasChange,
+    dataBaseUpdate,
+    priceState,
+  } = useCart();
 
   return (
     <>
@@ -248,136 +192,21 @@ function Cart({ image }) {
           pauseOnHover
         />
         <ToastContainer />
-        {cartData.length ? <ItemsTitle>Lista de Compras</ItemsTitle> : null}
-        {cartData.length ? (
-          <StyledTable>
-            <tbody>
-              {cartData.map((item) => {
-                return (
-                  <CartItem
-                    title={item.title}
-                    price={item.price}
-                    quantity={item.quantity}
-                    id={item.id}
-                    key={item.id}
-                  />
-                );
-              })}
-            </tbody>
-          </StyledTable>
-        ) : (
-          <EmptyCart style={{ alignSelf: "center", textAlign: "center" }}>
-            Carrito Vacio
-          </EmptyCart>
-        )}
+        <CartItems cartData={cartData} />
 
         <br />
         {cartData.length ? (
           <BubbleWrapper>
-            <Holder backColor={colors.primary} priceColor={colors.strongAccent}>
-              <strong>Precio Total: </strong>{" "}
-              <Price price={priceState} color={colors.accent} />
-            </Holder>
-            <UserForm>
-              <input
-                type="text"
-                placeholder="Introduzca su nombre"
-                onChange={handleUserChange}
-                name="name"
-              />
-              <input
-                type="text"
-                placeholder="Introduzca su apellido"
-                onChange={handleUserChange}
-                name="lastName"
-              />
-              <input
-                type="email"
-                onChange={handleUserChange}
-                name="mail"
-                placeholder="Introduzca su e-Mail"
-              />
-              <input
-                type="tel"
-                onChange={handleUserChange}
-                name="phoneNumber"
-                placeholder="Introduzca su telefono"
-              />
-            </UserForm>
+            <PriceHolder colors={colors} priceState={priceState} />
             <Holder backColor={colors.primary}>
-              <ul>
-                <li>
-                  <input
-                    type="radio"
-                    name="cuotas"
-                    value="1"
-                    onChange={(e) => handleQuotasChange(e)}
-                  />
-                  <label htmlFor="cuotas">
-                    1 pago de{" "}
-                    <strong style={{ color: "#333", fontWeight: "bold" }}>
-                      {pesosArgentinos(priceState)}$
-                    </strong>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    name="cuotas"
-                    value="3"
-                    onChange={(e) => handleQuotasChange(e)}
-                  />
-                  <label htmlFor="cuotas">
-                    3 cuotas de{" "}
-                    <strong style={{ color: "#333", fontWeight: "bold" }}>
-                      {pesosArgentinos(intrests(priceState, 3))}$
-                    </strong>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    name="cuotas"
-                    value="6"
-                    onChange={(e) => handleQuotasChange(e)}
-                  />
-                  <label htmlFor="cuotas">
-                    6 cuotas de{" "}
-                    <strong style={{ color: "#333", fontWeight: "bold" }}>
-                      {pesosArgentinos(intrests(priceState, 6))}$
-                    </strong>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    name="cuotas"
-                    value="9"
-                    onChange={(e) => handleQuotasChange(e)}
-                  />
-                  <label htmlFor="cuotas">
-                    9 cuotas de{" "}
-                    <strong style={{ color: "#333", fontWeight: "bold" }}>
-                      {pesosArgentinos(intrests(priceState, 9))}$
-                    </strong>
-                  </label>
-                </li>
-                <li>
-                  <input
-                    type="radio"
-                    name="cuotas"
-                    value="12"
-                    onChange={(e) => handleQuotasChange(e)}
-                  />
-                  <label htmlFor="cuotas">
-                    12 cuotas de{" "}
-                    <strong style={{ color: "#333", fontWeight: "bold" }}>
-                      {pesosArgentinos(intrests(priceState, 12))}$
-                    </strong>
-                  </label>
-                </li>
-              </ul>
+              <CartUserForm userState={userState} setUserState={setUserState} />
             </Holder>
+            <QuotaController
+              handleQuotasChange={handleQuotasChange}
+              setQuota={setQuota}
+              colors={colors}
+              priceState={priceState}
+            />
           </BubbleWrapper>
         ) : null}
 
